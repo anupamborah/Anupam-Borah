@@ -1,21 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_banner": {
       "type": "image-banner",
       "blocks": {
-        "heading": {
+        "heading_V6yL77": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "heading": "<strong>The Gift Guide</strong>",
+            "heading_size": "h1"
           }
         },
-        "button": {
+        "text_U7H4Un": {
+          "type": "text",
+          "settings": {
+            "text": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+            "text_style": "body"
+          }
+        },
+        "buttons_UE37WU": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
+            "button_label_1": "SHOP NOW",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
             "button_label_2": "",
             "button_link_2": "",
             "button_style_secondary_2": false
@@ -23,39 +39,63 @@
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "heading_V6yL77",
+        "text_U7H4Un",
+        "buttons_UE37WU"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
+        "image": "shopify://shop_images/banner-desktop_939c3633-51be-4657-9793-497e578c5daf.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
         "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-1",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
+      }
+    },
+    "rich_text_U7EF93": {
+      "type": "rich-text",
+      "blocks": {
+        "text_BpexyX": {
+          "type": "text",
+          "settings": {
+            "text": "<h5><strong>SUSTAINABLE, ETHICALLY  MADE CLOTHES IN SIZES XXS TO 6XL</strong></h5>"
+          }
+        }
+      },
+      "block_order": [
+        "text_BpexyX"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 8,
+        "padding_bottom": 8
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
+        "collection": "all",
+        "products_to_show": 6,
+        "title": "Tisso vison in the wild",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
+        "columns_desktop": 3,
         "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -63,6 +103,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
@@ -70,6 +111,7 @@
   },
   "order": [
     "image_banner",
+    "rich_text_U7EF93",
     "featured_collection"
   ]
 }
