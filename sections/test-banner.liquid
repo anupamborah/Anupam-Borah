@@ -36,21 +36,40 @@
     "
   >
     {% if section.settings.heading != blank %}
-      <h2 class="test-banner__heading">{{ section.settings.heading }}</h2>
+      <{{ section.settings.heading_tag }} 
+        class="test-banner__heading"
+        style="font-size: {{ section.settings.heading_size }}px"
+      >
+        {{ section.settings.heading }}
+      </{{ section.settings.heading_tag }}>
     {% endif %}
 
     {% if section.settings.subheading != blank %}
-      <p class="test-banner__subheading">{{ section.settings.subheading }}</p>
+      <p 
+        class="test-banner__subheading"
+        style="font-size: {{ section.settings.subheading_size }}px"
+      >
+        {{ section.settings.subheading }}
+      </p>
     {% endif %}
 
     {% if section.settings.button_label != blank %}
-      <a 
-        href="{{ section.settings.button_link }}" 
-        class="test-banner__button"
+      <div 
+        class="
+          test-banner__button-wrapper
+          btn-align-desktop-{{ section.settings.button_align_desktop }}
+          btn-align-mobile-{{ section.settings.button_align_mobile }}
+        "
       >
-        {{ section.settings.button_label }}
-        <span class="arrow">→</span>
-      </a>
+        <a 
+          href="{{ section.settings.button_link }}" 
+          class="test-banner__button btn-size-{{ section.settings.button_size }}"
+          style="font-size: {{ section.settings.button_text_size }}px"
+        >
+          {{ section.settings.button_label }}
+          <span class="arrow">→</span>
+        </a>
+      </div>
     {% endif %}
   </div>
 </div>
@@ -85,10 +104,6 @@
   position: absolute;
   transform: translate(-50%, -50%);
   max-width: 600px;
-}
-
-/* Default fallback */
-.test-banner__content {
   top: 50%;
   left: 50%;
   text-align: center;
@@ -118,21 +133,38 @@
 
 /* Typography */
 .test-banner__heading {
-  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .test-banner__subheading {
-  font-size: 1rem;
   margin-bottom: 1.5rem;
 }
 
-/* Button */
+/* Button wrapper alignments */
+.test-banner__button-wrapper {
+  display: flex;
+}
+
+.btn-align-desktop-left   { justify-content: flex-start; }
+.btn-align-desktop-center { justify-content: center; }
+.btn-align-desktop-right  { justify-content: flex-end; }
+
+@media (max-width: 749px) {
+  .btn-align-mobile-left   { justify-content: flex-start; }
+  .btn-align-mobile-center { justify-content: center; }
+  .btn-align-mobile-right  { justify-content: flex-end; }
+}
+
+/* Button sizes */
+.btn-size-small  { padding: 8px 16px; }
+.btn-size-medium { padding: 12px 24px; }
+.btn-size-large  { padding: 16px 32px; }
+
+/* Button styling */
 .test-banner__button {
   display: inline-flex;
   align-items: center;
-  padding: 12px 24px;
   background: black;
   color: white;
   text-decoration: none;
@@ -173,16 +205,48 @@
       "label": "Mobile Image"
     },
     {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading Tag",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "The Gift Guide"
     },
     {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (px)",
+      "default": 40,
+      "min": 12,
+      "max": 100,
+      "step": 1
+    },
+    {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
       "default": "Discover Joy: Your Ultimate Holiday Gift Destination."
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Font Size (px)",
+      "default": 16,
+      "min": 10,
+      "max": 50,
+      "step": 1
     },
     {
       "type": "text",
@@ -195,6 +259,48 @@
       "id": "button_link",
       "label": "Button Link",
       "default": "/collections/all"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button Font Size (px)",
+      "default": 14,
+      "min": 10,
+      "max": 30,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button Size",
+      "default": "medium",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_align_desktop",
+      "label": "Button Alignment (Desktop)",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_align_mobile",
+      "label": "Button Alignment (Mobile)",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "select",
