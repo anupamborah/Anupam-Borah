@@ -1,0 +1,171 @@
+<!-- sections/test-banner.liquid -->
+<div id="TestBanner-{{ section.id }}" class="test-banner">
+  <div class="test-banner__media">
+    <!-- Desktop Image -->
+    {% if section.settings.desktop_image != blank %}
+      <img 
+        src="{{ section.settings.desktop_image | image_url: width: 2000 }}" 
+        alt="Banner Image" 
+        class="test-banner__image test-banner__image--desktop" 
+        width="2000"
+        height="auto"
+        loading="lazy"
+      >
+    {% endif %}
+
+    <!-- Mobile Image -->
+    {% if section.settings.mobile_image != blank %}
+      <img 
+        src="{{ section.settings.mobile_image | image_url: width: 900 }}" 
+        alt="Banner Image Mobile" 
+        class="test-banner__image test-banner__image--mobile" 
+        width="900"
+        height="auto"
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
+
+  <div class="test-banner__content page-width">
+    {% if section.settings.heading != blank %}
+      <h2 class="test-banner__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <p class="test-banner__subheading">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% if section.settings.button_label != blank %}
+      <a 
+        href="{{ section.settings.button_link }}" 
+        class="test-banner__button"
+      >
+        {{ section.settings.button_label }}
+        <span class="arrow">→</span>
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.test-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+.test-banner__media {
+  position: relative;
+  width: 100%;
+}
+
+.test-banner__image {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+.test-banner__image--desktop {
+  display: block;
+}
+
+@media (max-width: 749px) {
+  .test-banner__image--desktop { display: none; }
+  .test-banner__image--mobile { display: block; }
+}
+
+.test-banner__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  max-width: 600px;
+}
+
+.test-banner__heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.test-banner__subheading {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.test-banner__button {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: black;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.test-banner__button .arrow {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.test-banner__button:hover {
+  background: #333;
+}
+
+.test-banner__button:hover .arrow {
+  transform: translateX(6px);
+}
+</style>
+
+{% schema %}
+{
+  "name": "Test Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Test Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
