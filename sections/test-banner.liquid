@@ -35,9 +35,17 @@
       </{{ section.settings.heading_tag }}>
     {% endif %}
 
-    {% if section.settings.subheading != blank %}
-      <p class="test-banner__subheading">
-        {{ section.settings.subheading }}
+    <!-- Desktop Subheading -->
+    {% if section.settings.subheading_desktop != blank %}
+      <p class="test-banner__subheading test-banner__subheading--desktop">
+        {{ section.settings.subheading_desktop }}
+      </p>
+    {% endif %}
+
+    <!-- Mobile Subheading -->
+    {% if section.settings.subheading_mobile != blank %}
+      <p class="test-banner__subheading test-banner__subheading--mobile">
+        {{ section.settings.subheading_mobile }}
       </p>
     {% endif %}
 
@@ -114,6 +122,15 @@
   line-height: 1.4;
 }
 
+/* Desktop subheading */
+.test-banner__subheading--desktop { display: block; }
+.test-banner__subheading--mobile { display: none; }
+
+@media (max-width: 749px) {
+  .test-banner__subheading--desktop { display: none; }
+  .test-banner__subheading--mobile { display: block; }
+}
+
 .test-banner__button-wrapper {
   display: flex;
   justify-content: flex-start;
@@ -179,7 +196,8 @@
       ]
     },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The Gift Guide" },
-    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Discover Joy: Your Ultimate Holiday Gift Destination." },
+    { "type": "text", "id": "subheading_desktop", "label": "Desktop Subheading", "default": "Discover Joy: Your Ultimate Holiday Gift Destination." },
+    { "type": "text", "id": "subheading_mobile", "label": "Mobile Subheading", "default": "Your Holiday Gifts in One Place." },
     { "type": "text", "id": "button_label", "label": "Button Label", "default": "Shop Now" },
     { "type": "url", "id": "button_link", "label": "Button Link", "default": "/collections/all" },
     {
