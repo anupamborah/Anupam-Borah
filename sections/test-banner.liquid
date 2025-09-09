@@ -26,52 +26,26 @@
     {% endif %}
   </div>
 
-  <div 
-    class="
-      test-banner__content page-width
-      align-desktop-{{ section.settings.desktop_alignment }}
-      align-mobile-{{ section.settings.mobile_alignment }}
-      valign-desktop-{{ section.settings.desktop_valignment }}
-      valign-mobile-{{ section.settings.mobile_valignment }}
-    "
-  >
+  <div class="test-banner__content">
     {% if section.settings.heading != blank %}
       <{{ section.settings.heading_tag }} 
         class="test-banner__heading"
-        style="
-          font-size: {{ section.settings.heading_size_desktop }}px;
-          margin: {{ section.settings.heading_margin_top_desktop }}px {{ section.settings.heading_margin_right_desktop }}px {{ section.settings.heading_margin_bottom_desktop }}px {{ section.settings.heading_margin_left_desktop }}px;
-        "
       >
         {{ section.settings.heading }}
       </{{ section.settings.heading_tag }}>
     {% endif %}
 
     {% if section.settings.subheading != blank %}
-      <p 
-        class="test-banner__subheading"
-        style="
-          font-size: {{ section.settings.subheading_size_desktop }}px;
-          margin: {{ section.settings.subheading_margin_top_desktop }}px {{ section.settings.subheading_margin_right_desktop }}px {{ section.settings.subheading_margin_bottom_desktop }}px {{ section.settings.subheading_margin_left_desktop }}px;
-        "
-      >
+      <p class="test-banner__subheading">
         {{ section.settings.subheading }}
       </p>
     {% endif %}
 
     {% if section.settings.button_label != blank %}
-      <div 
-        class="
-          test-banner__button-wrapper
-          btn-align-desktop-{{ section.settings.button_align_desktop }}
-          btn-align-mobile-{{ section.settings.button_align_mobile }}
-        "
-        style="margin: {{ section.settings.button_margin_top_desktop }}px {{ section.settings.button_margin_right_desktop }}px {{ section.settings.button_margin_bottom_desktop }}px {{ section.settings.button_margin_left_desktop }}px;"
-      >
+      <div class="test-banner__button-wrapper">
         <a 
           href="{{ section.settings.button_link }}" 
           class="test-banner__button btn-size-{{ section.settings.button_size }}"
-          style="font-size: {{ section.settings.button_text_size }}px"
         >
           {{ section.settings.button_label }}
           <span class="arrow">→</span>
@@ -109,56 +83,45 @@
 
 .test-banner__content {
   position: absolute;
-  transform: translate(-50%, -50%);
-  max-width: 600px;
   top: 50%;
-  left: 50%;
-  text-align: center;
+  left: 10%;
+  transform: translateY(-50%);
+  max-width: 600px;
+  text-align: left;
 }
-
-/* Horizontal Alignment */
-.align-desktop-left   { left: 20%; text-align: left; transform: translate(-20%, -50%); }
-.align-desktop-center { left: 50%; text-align: center; transform: translate(-50%, -50%); }
-.align-desktop-right  { left: 80%; text-align: right; transform: translate(-80%, -50%); }
 
 @media (max-width: 749px) {
-  .align-mobile-left   { left: 20%; text-align: left; transform: translate(-20%, -50%); }
-  .align-mobile-center { left: 50%; text-align: center; transform: translate(-50%, -50%); }
-  .align-mobile-right  { left: 80%; text-align: right; transform: translate(-80%, -50%); }
+  .test-banner__content {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    max-width: 90%;
+  }
 }
 
-/* Vertical Alignment */
-.valign-desktop-top    { top: 20%; transform: translate(-50%, -20%); }
-.valign-desktop-middle { top: 50%; transform: translate(-50%, -50%); }
-.valign-desktop-bottom { top: 80%; transform: translate(-50%, -80%); }
-
-@media (max-width: 749px) {
-  .valign-mobile-top    { top: 20%; transform: translate(-50%, -20%); }
-  .valign-mobile-middle { top: 50%; transform: translate(-50%, -50%); }
-  .valign-mobile-bottom { top: 80%; transform: translate(-50%, -80%); }
+.test-banner__heading {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 16px;
 }
 
-/* Button wrapper alignments */
+.test-banner__subheading {
+  font-size: 16px;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
 .test-banner__button-wrapper {
   display: flex;
+  justify-content: flex-start;
 }
-
-.btn-align-desktop-left   { justify-content: flex-start; }
-.btn-align-desktop-center { justify-content: center; }
-.btn-align-desktop-right  { justify-content: flex-end; }
 
 @media (max-width: 749px) {
-  .btn-align-mobile-left   { justify-content: flex-start; }
-  .btn-align-mobile-center { justify-content: center; }
-  .btn-align-mobile-right  { justify-content: flex-end; }
+  .test-banner__button-wrapper {
+    justify-content: center;
+  }
 }
 
-/* Button sizes */
-.btn-size-small  { padding: 8px 16px; }
-.btn-size-medium { padding: 12px 24px; }
-.btn-size-large  { padding: 16px 32px; }
-
-/* Button styling */
 .test-banner__button {
   display: inline-flex;
   align-items: center;
@@ -170,6 +133,10 @@
   transition: all 0.3s ease;
   overflow: hidden;
 }
+
+.btn-size-small  { padding: 8px 16px; font-size: 12px; }
+.btn-size-medium { padding: 12px 24px; font-size: 14px; }
+.btn-size-large  { padding: 16px 32px; font-size: 16px; }
 
 .test-banner__button .arrow {
   margin-left: 8px;
@@ -184,19 +151,10 @@
   transform: translateX(6px);
 }
 
-/* Mobile overrides for margins & text size */
+/* Mobile font sizes */
 @media (max-width: 749px) {
-  .test-banner__heading {
-    font-size: {{ section.settings.heading_size_mobile }}px !important;
-    margin: {{ section.settings.heading_margin_top_mobile }}px {{ section.settings.heading_margin_right_mobile }}px {{ section.settings.heading_margin_bottom_mobile }}px {{ section.settings.heading_margin_left_mobile }}px !important;
-  }
-  .test-banner__subheading {
-    font-size: {{ section.settings.subheading_size_mobile }}px !important;
-    margin: {{ section.settings.subheading_margin_top_mobile }}px {{ section.settings.subheading_margin_right_mobile }}px {{ section.settings.subheading_margin_bottom_mobile }}px {{ section.settings.subheading_margin_left_mobile }}px !important;
-  }
-  .test-banner__button-wrapper {
-    margin: {{ section.settings.button_margin_top_mobile }}px {{ section.settings.button_margin_right_mobile }}px {{ section.settings.button_margin_bottom_mobile }}px {{ section.settings.button_margin_left_mobile }}px !important;
-  }
+  .test-banner__heading { font-size: 24px; margin-bottom: 12px; }
+  .test-banner__subheading { font-size: 14px; margin-bottom: 20px; }
 }
 </style>
 
@@ -206,121 +164,19 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "desktop_image",
-      "label": "Desktop Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile Image"
-    },
-    {
-      "type": "select",
-      "id": "heading_tag",
-      "label": "Heading Tag",
-      "default": "h2",
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile Image" },
+    { "type": "select", "id": "heading_tag", "label": "Heading Tag", "default": "h2",
       "options": [
         { "value": "h1", "label": "H1" },
         { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "h4", "label": "H4" },
-        { "value": "h5", "label": "H5" },
-        { "value": "h6", "label": "H6" }
+        { "value": "h3", "label": "H3" }
       ]
     },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "The Gift Guide"
-    },
-    {
-      "type": "range",
-      "id": "heading_size_desktop",
-      "label": "Heading Font Size Desktop (px)",
-      "default": 40,
-      "min": 12,
-      "max": 100,
-      "step": 1
-    },
-    {
-      "type": "range",
-      "id": "heading_size_mobile",
-      "label": "Heading Font Size Mobile (px)",
-      "default": 24,
-      "min": 10,
-      "max": 60,
-      "step": 1
-    },
-
-    { "type": "range", "id": "heading_margin_top_desktop", "label": "Heading Margin Top Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_right_desktop", "label": "Heading Margin Right Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_bottom_desktop", "label": "Heading Margin Bottom Desktop (px)", "default": 16, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_left_desktop", "label": "Heading Margin Left Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    { "type": "range", "id": "heading_margin_top_mobile", "label": "Heading Margin Top Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_right_mobile", "label": "Heading Margin Right Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_bottom_mobile", "label": "Heading Margin Bottom Mobile (px)", "default": 16, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "heading_margin_left_mobile", "label": "Heading Margin Left Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Discover Joy: Your Ultimate Holiday Gift Destination."
-    },
-    {
-      "type": "range",
-      "id": "subheading_size_desktop",
-      "label": "Subheading Font Size Desktop (px)",
-      "default": 16,
-      "min": 10,
-      "max": 50,
-      "step": 1
-    },
-    {
-      "type": "range",
-      "id": "subheading_size_mobile",
-      "label": "Subheading Font Size Mobile (px)",
-      "default": 14,
-      "min": 8,
-      "max": 40,
-      "step": 1
-    },
-
-    { "type": "range", "id": "subheading_margin_top_desktop", "label": "Subheading Margin Top Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_right_desktop", "label": "Subheading Margin Right Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_bottom_desktop", "label": "Subheading Margin Bottom Desktop (px)", "default": 24, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_left_desktop", "label": "Subheading Margin Left Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    { "type": "range", "id": "subheading_margin_top_mobile", "label": "Subheading Margin Top Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_right_mobile", "label": "Subheading Margin Right Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_bottom_mobile", "label": "Subheading Margin Bottom Mobile (px)", "default": 24, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "subheading_margin_left_mobile", "label": "Subheading Margin Left Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button Label",
-      "default": "Shop Now"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button Link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "range",
-      "id": "button_text_size",
-      "label": "Button Font Size (px)",
-      "default": 14,
-      "min": 10,
-      "max": 30,
-      "step": 1
-    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Gift Guide" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Discover Joy: Your Ultimate Holiday Gift Destination." },
+    { "type": "text", "id": "button_label", "label": "Button Label", "default": "Shop Now" },
+    { "type": "url", "id": "button_link", "label": "Button Link", "default": "/collections/all" },
     {
       "type": "select",
       "id": "button_size",
@@ -331,90 +187,10 @@
         { "value": "medium", "label": "Medium" },
         { "value": "large", "label": "Large" }
       ]
-    },
-
-    { "type": "range", "id": "button_margin_top_desktop", "label": "Button Margin Top Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_right_desktop", "label": "Button Margin Right Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_bottom_desktop", "label": "Button Margin Bottom Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_left_desktop", "label": "Button Margin Left Desktop (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    { "type": "range", "id": "button_margin_top_mobile", "label": "Button Margin Top Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_right_mobile", "label": "Button Margin Right Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_bottom_mobile", "label": "Button Margin Bottom Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-    { "type": "range", "id": "button_margin_left_mobile", "label": "Button Margin Left Mobile (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
-
-    {
-      "type": "select",
-      "id": "button_align_desktop",
-      "label": "Button Alignment (Desktop)",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "button_align_mobile",
-      "label": "Button Alignment (Mobile)",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "desktop_alignment",
-      "label": "Desktop Content Alignment (Horizontal)",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "desktop_valignment",
-      "label": "Desktop Content Alignment (Vertical)",
-      "default": "middle",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "middle", "label": "Middle" },
-        { "value": "bottom", "label": "Bottom" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "mobile_alignment",
-      "label": "Mobile Content Alignment (Horizontal)",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "mobile_valignment",
-      "label": "Mobile Content Alignment (Vertical)",
-      "default": "middle",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "middle", "label": "Middle" },
-        { "value": "bottom", "label": "Bottom" }
-      ]
     }
   ],
   "presets": [
-    {
-      "name": "Test Banner",
-      "category": "Custom"
-    }
+    { "name": "Test Banner", "category": "Custom" }
   ]
 }
 {% endschema %}
