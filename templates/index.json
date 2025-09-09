@@ -66,7 +66,8 @@
         "mobile_image": "shopify://shop_images/banner-mobile.png",
         "heading_tag": "h2",
         "heading": "The Gift Guide",
-        "subheading": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+        "subheading_desktop": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+        "subheading_mobile": "Discover Joy: Your Ultimate Holiday Gift Destination.",
         "button_label": "SHOP NOW",
         "button_link": "shopify://collections/all",
         "button_size": "medium"
