@@ -26,7 +26,15 @@
     {% endif %}
   </div>
 
-  <div class="test-banner__content page-width">
+  <div 
+    class="
+      test-banner__content page-width
+      align-desktop-{{ section.settings.desktop_alignment }}
+      align-mobile-{{ section.settings.mobile_alignment }}
+      valign-desktop-{{ section.settings.desktop_valignment }}
+      valign-mobile-{{ section.settings.mobile_valignment }}
+    "
+  >
     {% if section.settings.heading != blank %}
       <h2 class="test-banner__heading">{{ section.settings.heading }}</h2>
     {% endif %}
@@ -75,13 +83,40 @@
 
 .test-banner__content {
   position: absolute;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
-  text-align: left;
   max-width: 600px;
 }
 
+/* Default fallback */
+.test-banner__content {
+  top: 50%;
+  left: 50%;
+  text-align: center;
+}
+
+/* Horizontal Alignment */
+.align-desktop-left   { left: 20%; text-align: left; transform: translate(-20%, -50%); }
+.align-desktop-center { left: 50%; text-align: center; transform: translate(-50%, -50%); }
+.align-desktop-right  { left: 80%; text-align: right; transform: translate(-80%, -50%); }
+
+@media (max-width: 749px) {
+  .align-mobile-left   { left: 20%; text-align: left; transform: translate(-20%, -50%); }
+  .align-mobile-center { left: 50%; text-align: center; transform: translate(-50%, -50%); }
+  .align-mobile-right  { left: 80%; text-align: right; transform: translate(-80%, -50%); }
+}
+
+/* Vertical Alignment */
+.valign-desktop-top    { top: 20%; transform: translate(-50%, -20%); }
+.valign-desktop-middle { top: 50%; transform: translate(-50%, -50%); }
+.valign-desktop-bottom { top: 80%; transform: translate(-50%, -80%); }
+
+@media (max-width: 749px) {
+  .valign-mobile-top    { top: 20%; transform: translate(-50%, -20%); }
+  .valign-mobile-middle { top: 50%; transform: translate(-50%, -50%); }
+  .valign-mobile-bottom { top: 80%; transform: translate(-50%, -80%); }
+}
+
+/* Typography */
 .test-banner__heading {
   font-size: 2.5rem;
   font-weight: 700;
@@ -93,6 +128,7 @@
   margin-bottom: 1.5rem;
 }
 
+/* Button */
 .test-banner__button {
   display: inline-flex;
   align-items: center;
@@ -159,6 +195,50 @@
       "id": "button_link",
       "label": "Button Link",
       "default": "/collections/all"
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Desktop Content Alignment (Horizontal)",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_valignment",
+      "label": "Desktop Content Alignment (Vertical)",
+      "default": "middle",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Mobile Content Alignment (Horizontal)",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_valignment",
+      "label": "Mobile Content Alignment (Vertical)",
+      "default": "middle",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ]
     }
   ],
   "presets": [

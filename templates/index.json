@@ -43,6 +43,7 @@
         "text_U7H4Un",
         "buttons_UE37WU"
       ],
+      "disabled": true,
       "settings": {
         "image": "shopify://shop_images/banner-desktop_939c3633-51be-4657-9793-497e578c5daf.png",
         "image_overlay_opacity": 0,
@@ -55,6 +56,18 @@
         "stack_images_on_mobile": false,
         "mobile_content_alignment": "center",
         "show_text_below": false
+      }
+    },
+    "test_banner_MCfqJ9": {
+      "type": "test-banner",
+      "name": "Test Banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/banner-desktop_939c3633-51be-4657-9793-497e578c5daf.png",
+        "mobile_image": "shopify://shop_images/banner-mobile.png",
+        "heading": "The Gift Guide",
+        "subheading": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/all"
       }
     },
     "rich_text_U7EF93": {
@@ -111,6 +124,7 @@
   },
   "order": [
     "image_banner",
+    "test_banner_MCfqJ9",
     "rich_text_U7EF93",
     "featured_collection"
   ]
