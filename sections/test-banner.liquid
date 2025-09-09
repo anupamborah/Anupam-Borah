@@ -38,7 +38,11 @@
     {% if section.settings.heading != blank %}
       <{{ section.settings.heading_tag }} 
         class="test-banner__heading"
-        style="font-size: {{ section.settings.heading_size }}px"
+        style="
+          font-size: {{ section.settings.heading_size_desktop }}px;
+          margin: {{ section.settings.heading_margin_top }}px {{ section.settings.heading_margin_right }}px {{ section.settings.heading_margin_bottom }}px {{ section.settings.heading_margin_left }}px;
+          padding: {{ section.settings.heading_padding_top }}px {{ section.settings.heading_padding_right }}px {{ section.settings.heading_padding_bottom }}px {{ section.settings.heading_padding_left }}px;
+        "
       >
         {{ section.settings.heading }}
       </{{ section.settings.heading_tag }}>
@@ -47,7 +51,11 @@
     {% if section.settings.subheading != blank %}
       <p 
         class="test-banner__subheading"
-        style="font-size: {{ section.settings.subheading_size }}px"
+        style="
+          font-size: {{ section.settings.subheading_size_desktop }}px;
+          margin: {{ section.settings.subheading_margin_top }}px {{ section.settings.subheading_margin_right }}px {{ section.settings.subheading_margin_bottom }}px {{ section.settings.subheading_margin_left }}px;
+          padding: {{ section.settings.subheading_padding_top }}px {{ section.settings.subheading_padding_right }}px {{ section.settings.subheading_padding_bottom }}px {{ section.settings.subheading_padding_left }}px;
+        "
       >
         {{ section.settings.subheading }}
       </p>
@@ -131,16 +139,6 @@
   .valign-mobile-bottom { top: 80%; transform: translate(-50%, -80%); }
 }
 
-/* Typography */
-.test-banner__heading {
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.test-banner__subheading {
-  margin-bottom: 1.5rem;
-}
-
 /* Button wrapper alignments */
 .test-banner__button-wrapper {
   display: flex;
@@ -186,6 +184,16 @@
 .test-banner__button:hover .arrow {
   transform: translateX(6px);
 }
+
+/* Mobile text sizing overrides */
+@media (max-width: 749px) {
+  .test-banner__heading {
+    font-size: {{ section.settings.heading_size_mobile }}px !important;
+  }
+  .test-banner__subheading {
+    font-size: {{ section.settings.subheading_size_mobile }}px !important;
+  }
+}
 </style>
 
 {% schema %}
@@ -226,13 +234,40 @@
     },
     {
       "type": "range",
-      "id": "heading_size",
-      "label": "Heading Font Size (px)",
+      "id": "heading_size_desktop",
+      "label": "Heading Font Size Desktop (px)",
       "default": 40,
       "min": 12,
       "max": 100,
       "step": 1
     },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Font Size Mobile (px)",
+      "default": 24,
+      "min": 10,
+      "max": 60,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_top",
+      "label": "Heading Margin Top (px)",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    { "type": "range", "id": "heading_margin_right", "label": "Heading Margin Right (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
+    { "type": "range", "id": "heading_margin_bottom", "label": "Heading Margin Bottom (px)", "default": 16, "min": 0, "max": 100, "step": 1 },
+    { "type": "range", "id": "heading_margin_left", "label": "Heading Margin Left (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
+
+    { "type": "range", "id": "heading_padding_top", "label": "Heading Padding Top (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "heading_padding_right", "label": "Heading Padding Right (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "heading_padding_bottom", "label": "Heading Padding Bottom (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "heading_padding_left", "label": "Heading Padding Left (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+
     {
       "type": "text",
       "id": "subheading",
@@ -241,13 +276,33 @@
     },
     {
       "type": "range",
-      "id": "subheading_size",
-      "label": "Subheading Font Size (px)",
+      "id": "subheading_size_desktop",
+      "label": "Subheading Font Size Desktop (px)",
       "default": 16,
       "min": 10,
       "max": 50,
       "step": 1
     },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "label": "Subheading Font Size Mobile (px)",
+      "default": 14,
+      "min": 8,
+      "max": 40,
+      "step": 1
+    },
+
+    { "type": "range", "id": "subheading_margin_top", "label": "Subheading Margin Top (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
+    { "type": "range", "id": "subheading_margin_right", "label": "Subheading Margin Right (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
+    { "type": "range", "id": "subheading_margin_bottom", "label": "Subheading Margin Bottom (px)", "default": 24, "min": 0, "max": 100, "step": 1 },
+    { "type": "range", "id": "subheading_margin_left", "label": "Subheading Margin Left (px)", "default": 0, "min": 0, "max": 100, "step": 1 },
+
+    { "type": "range", "id": "subheading_padding_top", "label": "Subheading Padding Top (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "subheading_padding_right", "label": "Subheading Padding Right (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "subheading_padding_bottom", "label": "Subheading Padding Bottom (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+    { "type": "range", "id": "subheading_padding_left", "label": "Subheading Padding Left (px)", "default": 0, "min": 0, "max": 50, "step": 1 },
+
     {
       "type": "text",
       "id": "button_label",
