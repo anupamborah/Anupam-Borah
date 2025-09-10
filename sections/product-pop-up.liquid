@@ -1,0 +1,325 @@
+<section id="featured-products-popup-{{ section.id }}" class="featured-products-section">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    <ul id="Grid-{{ section.id }}" class="product-grid" aria-label="Featured products">
+      {% for i in (1..6) %}
+        {% assign product_key = 'product_' | append: i %}
+        {% assign product_handle = section.settings[product_key] %}
+        {% assign product = all_products[product_handle] %}
+        {% if product %}
+          {% assign featured_image = product.featured_image | default: product.images.first %}
+          <li class="grid-item" data-product-handle="{{ product.handle }}" tabindex="0" role="button" aria-pressed="false" aria-label="View details for {{ product.title }}">
+            <img 
+              src="{{ featured_image | img_url: '400x400' }}" 
+              alt="{{ product.title | escape }}" 
+              loading="lazy" 
+              style="width:100%; height:300px; object-fit: contain; cursor:pointer;" />
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="product-popup-{{ section.id }}" class="product-popup" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="popup-title-{{ section.id }}">
+    <div class="popup-content" role="document">
+      <button id="popup-close-{{ section.id }}" class="popup-close" aria-label="Close popup">&times;</button>
+
+      <h2 id="popup-title-{{ section.id }}" class="popup-title"></h2>
+      <p class="popup-price"></p>
+      <div class="popup-description"></div>
+
+      <form id="add-to-cart-form-{{ section.id }}">
+        <div class="variant-options"></div>
+        <button type="submit" class="add-to-cart-btn" disabled>Add to cart</button>
+      </form>
+      <p class="popup-message" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-products-section {
+    padding: 40px 20px;
+  }
+  .section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  #Grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .grid-item {
+    cursor: pointer;
+    outline: none;
+  }
+  .grid-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  /* Popup styling */
+  .product-popup {
+    display: none;
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-popup.active {
+    display: flex;
+  }
+  .popup-content {
+    background: #fff;
+    max-width: 500px;
+    width: 90%;
+    padding: 20px 30px;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .popup-close {
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+  }
+  .variant-options {
+    margin: 20px 0;
+  }
+  .variant-options label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+  .variant-options select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+  .add-to-cart-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 16px;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+  }
+  .add-to-cart-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  .popup-message {
+    margin-top: 15px;
+    font-weight: 600;
+    color: green;
+  }
+</style>
+
+<script>
+  (() => {
+    const sectionId = "{{ section.id }}";
+
+    const grid = document.getElementById(`Grid-${sectionId}`);
+    const popup = document.getElementById(`product-popup-${sectionId}`);
+    const popupClose = document.getElementById(`popup-close-${sectionId}`);
+    const titleEl = popup.querySelector('.popup-title');
+    const priceEl = popup.querySelector('.popup-price');
+    const descEl = popup.querySelector('.popup-description');
+    const variantOptionsContainer = popup.querySelector('.variant-options');
+    const addToCartForm = document.getElementById(`add-to-cart-form-${sectionId}`);
+    const addToCartBtn = addToCartForm.querySelector('.add-to-cart-btn');
+    const popupMessage = popup.querySelector('.popup-message');
+
+    let currentProduct = null;
+    let currentVariants = [];
+    let selectedOptions = {};
+
+    async function loadProduct(handle) {
+      try {
+        const response = await fetch(`/products/${handle}.js`);
+        if (!response.ok) throw new Error('Product data not found');
+        const product = await response.json();
+
+        currentProduct = product;
+        currentVariants = product.variants;
+        selectedOptions = {};
+
+        titleEl.textContent = product.title;
+        descEl.innerHTML = product.description;
+        priceEl.textContent = Shopify.formatMoney(product.price);
+
+        variantOptionsContainer.innerHTML = '';
+        product.options.forEach((optionName, index) => {
+          const container = document.createElement('div');
+          container.classList.add('variant-option');
+
+          const label = document.createElement('label');
+          label.textContent = optionName;
+          label.htmlFor = `option-${index}-${sectionId}`;
+
+          const select = document.createElement('select');
+          select.id = `option-${index}-${sectionId}`;
+          select.name = `option${index + 1}`;
+
+          product.options_with_values[index].values.forEach(value => {
+            const optionElem = document.createElement('option');
+            optionElem.value = value;
+            optionElem.textContent = value;
+            select.appendChild(optionElem);
+          });
+
+          selectedOptions[optionName] = select.value;
+
+          select.addEventListener('change', () => {
+            selectedOptions[optionName] = select.value;
+            updateSelectedVariant();
+          });
+
+          container.appendChild(label);
+          container.appendChild(select);
+          variantOptionsContainer.appendChild(container);
+        });
+
+        updateSelectedVariant();
+
+        addToCartBtn.disabled = false;
+        popupMessage.textContent = '';
+
+        popup.classList.add('active');
+        popup.setAttribute('aria-hidden', 'false');
+
+      } catch (error) {
+        alert('Failed to load product details.');
+        console.error(error);
+      }
+    }
+
+    function updateSelectedVariant() {
+      const variant = currentVariants.find(v => {
+        return currentProduct.options.every((optionName, index) => {
+          return v[`option${index + 1}`] === selectedOptions[optionName];
+        });
+      });
+
+      if (variant) {
+        addToCartForm.dataset.variantId = variant.id;
+        priceEl.textContent = Shopify.formatMoney(variant.price);
+        addToCartBtn.disabled = false;
+      } else {
+        addToCartForm.dataset.variantId = '';
+        priceEl.textContent = 'Unavailable';
+        addToCartBtn.disabled = true;
+      }
+    }
+
+    async function addToCart(variantId) {
+      if (!variantId) return;
+
+      addToCartBtn.disabled = true;
+      popupMessage.textContent = 'Adding to cart...';
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ id: variantId, quantity: 1 })
+        });
+
+        if (!response.ok) throw new Error('Failed to add to cart.');
+
+        // Check if Black and Medium options selected
+        const hasBlack = Object.values(selectedOptions).some(val => val.toLowerCase() === 'black');
+        const hasMedium = Object.values(selectedOptions).some(val => val.toLowerCase() === 'medium');
+
+        if (hasBlack && hasMedium) {
+          // Add "Soft Winter Jacket" automatically
+          const swjResponse = await fetch('/products/soft-winter-jacket.js');
+          if (swjResponse.ok) {
+            const swjProduct = await swjResponse.json();
+            const swjVariantId = swjProduct.variants[0].id;
+            await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({id: swjVariantId, quantity:1})
+            });
+          }
+        }
+
+        popupMessage.textContent = 'Added to cart successfully!';
+      } catch (e) {
+        popupMessage.textContent = 'Failed to add product to cart.';
+        console.error(e);
+      } finally {
+        addToCartBtn.disabled = false;
+      }
+    }
+
+    grid.querySelectorAll('.grid-item').forEach(item => {
+      item.addEventListener('click', () => {
+        loadProduct(item.dataset.productHandle);
+      });
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          loadProduct(item.dataset.productHandle);
+        }
+      });
+    });
+
+    popupClose.addEventListener('click', () => {
+      popup.classList.remove('active');
+      popup.setAttribute('aria-hidden', 'true');
+    });
+
+    popup.addEventListener('click', e => {
+      if (e.target === popup) {
+        popup.classList.remove('active');
+        popup.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    addToCartForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const variantId = addToCartForm.dataset.variantId;
+      addToCart(variantId);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Products ",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section title", "default": "Featured Products" },
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "product", "id": "product_3", "label": "Product 3" },
+    { "type": "product", "id": "product_4", "label": "Product 4" },
+    { "type": "product", "id": "product_5", "label": "Product 5" },
+    { "type": "product", "id": "product_6", "label": "Product 6" }
+  ],
+  "presets": [
+    { "name": "Featured Products with Popup" }
+  ]
+}
+{% endschema %}
