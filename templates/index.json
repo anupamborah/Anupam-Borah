@@ -100,24 +100,13 @@
       "type": "featured-collection",
       "settings": {
         "title": "Tisso vison in the wild",
-        "heading_size": "h1",
-        "description": "",
-        "description_style": "body",
+        "columns_desktop": "2",
         "product_1": "black-leather-bag",
         "product_2": "blue-silk-tuxedo",
         "product_3": "chequered-red-shirt",
         "product_4": "classic-leather-jacket",
         "product_5": "classic-varsity-top",
-        "product_6": "dark-denim-top",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "product_6": "dark-denim-top"
       }
     }
   },
