@@ -1,6 +1,7 @@
 {% comment %}
   Featured Products (6) Section
   - Responsive grid (1 col mobile, 2 col tablet, desktop controlled by settings)
+  - Fetches full product objects via all_products
   - Vanilla JS only (no jQuery)
   - Well-commented for maintainability
 {% endcomment %}
@@ -14,7 +15,8 @@
     <ul id="Grid-{{ section.id }}" class="product-grid">
       {%- for i in (1..6) -%}
         {%- assign setting_id = 'product_' | append: i -%}
-        {%- assign product = section.settings[setting_id] -%}
+        {%- assign product_handle = section.settings[setting_id] -%}
+        {%- assign product = all_products[product_handle] -%}
         {%- if product != blank -%}
           <li class="grid-item">
             {%- render 'card-product',
