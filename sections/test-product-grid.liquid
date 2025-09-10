@@ -44,31 +44,32 @@
   </div>
 
   <!-- Modal -->
-  <div class="ee-modal" data-modal hidden aria-hidden="true" aria-labelledby="ee-modal-title" role="dialog">
-    <div class="ee-modal__overlay" data-modal-overlay></div>
-    <div class="ee-modal__panel" role="document">
-      <button class="ee-modal__close" data-modal-close aria-label="Close">&times;</button>
+<div class="ee-modal" data-modal hidden aria-hidden="true" aria-labelledby="ee-modal-title" role="dialog">
+  <div class="ee-modal__overlay" data-modal-overlay></div>
+  <div class="ee-modal__panel" role="document">
+    <button class="ee-modal__close" data-modal-close aria-label="Close">&times;</button>
 
-      <div class="ee-modal__media"><img data-modal-image alt=""></div>
-      <div class="ee-modal__body">
-        <h3 id="ee-modal-title" data-modal-title></h3>
-        <p class="ee-price" data-modal-price></p>
-        <div class="ee-desc" data-modal-desc></div>
+    <div class="ee-modal__media">
+      <img data-modal-image alt="">
+    </div>
+    <div class="ee-modal__body">
+      <h3 id="ee-modal-title" data-modal-title></h3>
+      <p class="ee-price" data-modal-price></p>
+      <div class="ee-desc" data-modal-desc></div>
 
-        <form class="ee-variants" data-variants-form>
-          <div data-options></div>
-          <div class="ee-qty">
-            <label for="ee-qty">Qty</label>
-            <input id="ee-qty" name="quantity" type="number" min="1" value="1" inputmode="numeric" />
-          </div>
-          <button type="submit" class="ee-btn ee-btn--primary" data-add-to-cart>
-            <span>Add to cart</span>
-          </button>
-          <p class="ee-status" data-status></p>
-        </form>
-      </div>
+      <form class="ee-variants" data-variants-form>
+        <div data-options></div>
+        <select data-size-dropdown>
+          <option disabled selected>Choose your size</option>
+        </select>
+        <button type="submit" class="ee-btn ee-btn--primary" data-add-to-cart>
+          <span>ADD TO CART</span>
+        </button>
+        <p class="ee-status" data-status></p>
+      </form>
     </div>
   </div>
+</div>
 </section>
 
 <link rel="preload" as="style" href="{{ 'test-styles.css' | asset_url }}">
