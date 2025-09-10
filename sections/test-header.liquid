@@ -44,7 +44,7 @@
       {{ section.settings.subheading }}
     </div>
     <div class="right">
-      <a href="{{ section.settings.collection_link }}" class="header-btn">
+      <a href="{{ section.settings.collection_link }}" class="banner-btn">
         {{ section.settings.button_label }}
       </a>
     </div>
@@ -68,7 +68,7 @@
     <div class="dropdown-content">
       <div class="store-name">{{ section.settings.store_name }}</div>
       <div class="subheading">{{ section.settings.subheading }}</div>
-      <a href="{{ section.settings.collection_link }}" class="header-btn">
+      <a href="{{ section.settings.collection_link }}" class="banner-btn">
         {{ section.settings.button_label }}
       </a>
     </div>
@@ -106,18 +106,23 @@
     text-align: right;
   }
 
-  /* Button styling (match with test-banner.liquid) */
-  .header-btn {
-    background-color: black;
-    color: white;
-    padding: 10px 20px;
+  /* Exact Button styling from test-banner.liquid */
+  .banner-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
-    font-size: 14px;
     border-radius: 4px;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    border: 1px solid #000000;
+    text-align: center;
   }
-  .header-btn:hover {
-    background-color: #444;
+  .banner-btn:hover {
+    background-color: transparent;
+    color: #000000;
   }
 
   /* Mobile */
