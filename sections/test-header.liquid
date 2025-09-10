@@ -112,8 +112,8 @@
   .header-btn {
     position: relative;
     display: inline-block;
-    background-color: #fff544;
-    color: black;
+    background-color: black;
+    color: white;
     text-decoration: none;
     border-radius: 4px;
     overflow: hidden;
@@ -122,24 +122,24 @@
   }
 
   /* Background animation effect */
-  .header-btn::before {
+  .test-banner__button::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 0%;
     height: 100%;
-    background: black;
+    background: yellow;
     z-index: -1;
     transition: width 0.4s ease;
   }
 
-  .header-btn:hover::before {
+  .test-banner__button:hover::before {
     width: 100%;
   }
 
-  .header-btn:hover {
-    color: white;
+  .test-banner__button:hover {
+    color: black;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
 
@@ -148,12 +148,12 @@
   .btn-size-medium { padding: 14px 40px; font-size: 16px; }
   .btn-size-large  { padding: 16px 32px; font-size: 16px; }
 
-  .header-btn .arrow {
+  .test-banner__button .arrow {
     margin-left: 8px;
     transition: transform 0.3s ease;
   }
 
-  .header-btn:hover .arrow {
+  .test-banner__button:hover .arrow {
     transform: translateX(6px);
   }
 
