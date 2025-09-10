@@ -78,9 +78,10 @@
       "name": "Responsive Rich Text",
       "settings": {
         "desktop_text": "<h4>SUSTAINABLE, ETHICALLY  MADE CLOTHES IN SIZES XXS TO 6XL</h4>",
-        "mobile_text": "<h5>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</h5>",
+        "mobile_text": "<p>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</p>",
         "desktop_font_size": 16,
-        "mobile_font_size": 14
+        "mobile_font_size": 14,
+        "color_scheme": "scheme-3"
       }
     },
     "rich_text_U7EF93": {
