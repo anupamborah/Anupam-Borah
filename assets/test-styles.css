@@ -42,9 +42,21 @@
   transform:scale(1.02);   /* subtle zoom */
   box-shadow:none;         /* no heavy shadow */
 }
-.ee-card__media img {
-  width:100%;height:auto;display:block;
+
+/* ✅ Portrait image container */
+.ee-card__media {
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4; /* fixed portrait ratio */
+  overflow:hidden;
 }
+.ee-card__media img {
+  width:100%;
+  height:100%;
+  object-fit:cover;   /* crop to fit portrait */
+  display:block;
+}
+
 .ee-card__info {
   padding:10px 4px;
 }
