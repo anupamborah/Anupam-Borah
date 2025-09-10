@@ -134,12 +134,13 @@
       ],
       "name": "EE • Product Grid + Popup",
       "settings": {
-        "grid_heading": "Featured Products",
+        "grid_heading": "Tisso vison in the wild",
         "auto_add_product": "dark-winter-jacket"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Tisso vison in the wild",
         "product_1": "black-leather-bag",

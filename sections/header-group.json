@@ -38,7 +38,6 @@
     },
     "header": {
       "type": "header",
-      "disabled": true,
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
@@ -55,21 +54,10 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
-    },
-    "custom_liquid_8XX384": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom-liquid.presets.name",
-      "settings": {
-        "custom_liquid": "",
-        "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
     }
   },
   "order": [
     "announcement-bar",
-    "header",
-    "custom_liquid_8XX384"
+    "header"
   ]
 }
