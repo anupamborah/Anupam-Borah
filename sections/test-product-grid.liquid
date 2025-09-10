@@ -1,0 +1,117 @@
+{% comment %}
+  New section from scratch: Product Grid + Popup
+  - Six blocks (product pickers)
+  - Clicking a card (or hotspot circle) opens a modal with:
+      title, price, description, variant options, Add to Cart
+  - Vanilla JS only (assets/test-popup.js)
+  - Auto-add rule: if selected variant options include 'Black' and 'Medium', also add the configured "Soft Winter Jacket"
+{% endcomment %}
+
+{% stylesheet %}
+/* Minimal critical CSS; rest in assets/test-styles.css */
+{% endstylesheet %}
+
+<section class="ee-grid" data-section-id="{{ section.id }}">
+  <div class="ee-container">
+    {% if section.settings.grid_heading != blank %}
+      <h2 class="ee-grid__heading">{{ section.settings.grid_heading }}</h2>
+    {% endif %}
+
+    <div class="ee-grid__list">
+      {% for block in section.blocks %}
+        {% assign prod = all_products[block.settings.product] %}
+        {% if prod %}
+          <article class="ee-card" data-block-id="{{ block.id }}">
+            <button class="ee-hotspot" aria-label="Quick view {{ prod.title }}"></button>
+
+            <a href="{{ prod.url }}" class="ee-card__media">
+              {% if prod.featured_image %}
+                {{ prod.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: prod.title }}
+              {% endif %}
+            </a>
+            <div class="ee-card__info">
+              <h3 class="ee-card__title">{{ prod.title }}</h3>
+              <p class="ee-card__price">
+                {% if prod.compare_at_price_min > prod.price_min %}
+                  <s>{{ prod.compare_at_price_min | money }}</s>
+                {% endif %}
+                <strong>{{ prod.price_min | money }}</strong>
+              </p>
+            </div>
+
+            <!-- Embed product JSON for the popup -->
+            <script type="application/json" class="ee-product-json">
+              {{ prod | json }}
+            </script>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Accessible Modal -->
+  <div class="ee-modal" data-modal hidden aria-hidden="true" aria-labelledby="ee-modal-title" role="dialog">
+    <div class="ee-modal__overlay" data-modal-overlay></div>
+    <div class="ee-modal__panel" role="document">
+      <button class="ee-modal__close" data-modal-close aria-label="Close">&times;</button>
+
+      <div class="ee-modal__media"><img data-modal-image alt=""></div>
+      <div class="ee-modal__body">
+        <h3 id="ee-modal-title" data-modal-title></h3>
+        <p class="ee-price" data-modal-price></p>
+        <div class="ee-desc" data-modal-desc></div>
+
+        <form class="ee-variants" data-variants-form>
+          <!-- Option groups injected by JS -->
+          <div data-options></div>
+
+          <div class="ee-qty">
+            <label for="ee-qty">Qty</label>
+            <input id="ee-qty" name="quantity" type="number" min="1" value="1" inputmode="numeric" />
+          </div>
+
+          <button type="submit" class="ee-btn ee-btn--primary" data-add-to-cart>
+            <span>Add to cart</span>
+          </button>
+
+          <p class="ee-status" data-status></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<link rel="preload" as="style" href="{{ 'test-styles.css' | asset_url }}">
+{{ 'test-styles.css' | asset_url | stylesheet_tag }}
+<script defer src="{{ 'test-popup.js' | asset_url }}"></script>
+
+{% liquid
+  assign auto_prod = all_products[ section.settings.auto_add_product ]
+%}
+<script type="application/json" class="ee-auto-product-json" data-section="{{ section.id }}">
+  {%- if auto_prod -%}
+    {{ auto_prod | json }}
+  {%- else -%}
+    null
+  {%- endif -%}
+</script>
+
+{% schema %}
+{
+  "name": "EE • Product Grid + Popup",
+  "settings": [
+    { "type": "text", "id": "grid_heading", "label": "Grid heading", "default": "Featured Products" },
+    {
+      "type": "product",
+      "id": "auto_add_product",
+      "label": "Auto-add product (Soft Winter Jacket)",
+      "info": "This product will be auto-added when a Black + Medium variant is added to cart. If it has multiple variants, the first available will be used."
+    }
+  ],
+  "blocks": [
+    { "type": "product-card", "name": "Product", "settings": [{ "type": "product", "id": "product", "label": "Product" }] }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "EE • Product Grid + Popup", "blocks": [{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" }] }]
+}
+{% endschema %}
