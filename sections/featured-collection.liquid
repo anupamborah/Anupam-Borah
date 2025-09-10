@@ -11,15 +11,22 @@
         {% assign product = all_products[product_handle] %}
         {% if product %}
           {% assign featured_image = product.featured_image | default: product.images.first %}
-          <li class="grid-item">
-            {% render 'card-product',
-              card_product: product,
-              featured_image: featured_image,
-              media_aspect_ratio: 'square',
-              show_secondary_image: true,
-              show_vendor: false,
-              show_rating: false
-            %}
+          <li class="grid-item" style="border: 1px solid #ddd; padding: 10px; box-sizing: border-box;">
+            {% if featured_image %}
+              <img 
+                src="{{ featured_image | img_url: '400x400' }}" 
+                alt="{{ product.title | escape }}" 
+                style="width: 100%; height: 300px; object-fit: contain;" 
+                loading="lazy" />
+            {% else %}
+              <img 
+                src="https://via.placeholder.com/400x400?text=No+Image" 
+                alt="No image available" 
+                style="width: 100%; height: 300px; object-fit: contain;" />
+            {% endif %}
+
+            <h3 style="margin: 10px 0 5px; font-size: 1.2rem;">{{ product.title }}</h3>
+            <p style="margin: 0; font-weight: bold;">{{ product.price | money }}</p>
           </li>
         {% endif %}
       {% endfor %}
