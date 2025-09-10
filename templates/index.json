@@ -81,7 +81,9 @@
         "mobile_text": "<p>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</p>",
         "desktop_font_size": 16,
         "mobile_font_size": 14,
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-2",
+        "padding_top": 100,
+        "padding_bottom": 0
       }
     },
     "rich_text_U7EF93": {
