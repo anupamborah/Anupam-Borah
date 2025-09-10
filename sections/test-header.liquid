@@ -1,0 +1,182 @@
+{% schema %}
+{
+  "name": "Test Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store Name",
+      "default": "Tisso Vison"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "url",
+      "id": "collection_link",
+      "label": "Collection Link"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Test Header"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="test-header color-{{ section.settings.color_scheme }}">
+  <!-- Desktop Header -->
+  <div class="desktop-header">
+    <div class="left">
+      {{ section.settings.store_name }}
+    </div>
+    <div class="middle">
+      {{ section.settings.subheading }}
+    </div>
+    <div class="right">
+      <a href="{{ section.settings.collection_link }}" class="header-btn">
+        {{ section.settings.button_label }}
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div class="left">
+      <button class="burger-btn" onclick="toggleMobileMenu(this)">
+        <span class="burger-icon">☰</span>
+        <span class="close-icon" style="display:none;">✖</span>
+      </button>
+    </div>
+    <div class="middle">
+      {{ section.settings.store_name }}
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown -->
+  <div class="mobile-dropdown" style="display:none;">
+    <div class="dropdown-content">
+      <div class="store-name">{{ section.settings.store_name }}</div>
+      <div class="subheading">{{ section.settings.subheading }}</div>
+      <a href="{{ section.settings.collection_link }}" class="header-btn">
+        {{ section.settings.button_label }}
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .test-header {
+    width: 100%;
+    padding: 15px 20px;
+    box-sizing: border-box;
+  }
+
+  /* Desktop */
+  .desktop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .desktop-header .left,
+  .desktop-header .middle,
+  .desktop-header .right {
+    flex: 1;
+    text-align: center;
+  }
+  .desktop-header .left {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .desktop-header .middle {
+    font-size: 16px;
+  }
+  .desktop-header .right {
+    text-align: right;
+  }
+
+  /* Button styling (match with test-banner.liquid) */
+  .header-btn {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  .header-btn:hover {
+    background-color: #444;
+  }
+
+  /* Mobile */
+  .mobile-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mobile-header .middle {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .burger-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+  }
+
+  .mobile-dropdown {
+    background: #f9f9f9;
+    padding: 15px;
+    text-align: center;
+  }
+  .mobile-dropdown .store-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .mobile-dropdown .subheading {
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    .desktop-header {
+      display: none;
+    }
+    .mobile-header {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  function toggleMobileMenu(button) {
+    const dropdown = button.closest('.test-header').querySelector('.mobile-dropdown');
+    const burgerIcon = button.querySelector('.burger-icon');
+    const closeIcon = button.querySelector('.close-icon');
+
+    if (dropdown.style.display === "none" || dropdown.style.display === "") {
+      dropdown.style.display = "block";
+      burgerIcon.style.display = "none";
+      closeIcon.style.display = "inline";
+    } else {
+      dropdown.style.display = "none";
+      burgerIcon.style.display = "inline";
+      closeIcon.style.display = "none";
+    }
+  }
+</script>
