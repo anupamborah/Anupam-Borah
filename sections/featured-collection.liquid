@@ -24,6 +24,7 @@
 {%- endif -%}
 
 {%- style -%}
+  /* Section padding controls */
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -34,6 +35,30 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
+  }
+
+  /* Responsive grid styling */
+  #Grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr; /* Default: Mobile = 1 column */
+    gap: 16px; /* Spacing between products */
+  }
+
+  @media screen and (min-width: 750px) {
+    #Grid-{{ section.id }} {
+      grid-template-columns: repeat(3, 1fr); /* Default desktop = 3 columns */
+    }
+  }
+
+  /* Extra grid modifiers (applied by JS based on theme settings) */
+  .grid--2-col-desktop {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .grid--3-col-desktop {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .grid--6-col-desktop {
+    grid-template-columns: repeat(6, 1fr) !important;
   }
 {%- endstyle -%}
 
@@ -46,29 +71,25 @@
   >
     <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width">
       {%- if section.settings.title != blank -%}
-        <h2 class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <h2 class="title inline-richtext {{ section.settings.heading_size }}">
           {{ section.settings.title }}
         </h2>
       {%- endif -%}
 
       {%- if section.settings.description != blank -%}
-        <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <div class="collection__description {{ section.settings.description_style }} rte">
           {{ section.settings.description }}
         </div>
       {%- endif -%}
     </div>
 
-    <ul
-      id="Grid-{{ section.id }}"
-      class="grid product-grid"
-      role="list"
-    >
+    <ul id="Grid-{{ section.id }}" class="product-grid" role="list">
       {% for i in (1..6) %}
         {% assign product_key = 'product_' | append: i %}
         {% assign selected_product = section.settings[product_key] %}
         {% if selected_product != blank %}
           {% assign product = all_products[selected_product] %}
-          <li class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <li class="grid__item">
             {% render 'card-product',
               card_product: product,
               media_aspect_ratio: section.settings.image_ratio,
@@ -92,33 +113,29 @@
         {% endif %}
       {% endfor %}
     </ul>
-
-    {% if section.settings.image_shape == 'arch' %}
-      {{ 'mask-arch.svg' | inline_asset_content }}
-    {%- endif -%}
   </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Find the section wrapper
-    const section = document.getElementById("collection-{{ section.id }}");
+    // Get grid element
     const grid = document.getElementById("Grid-{{ section.id }}");
+    const section = document.getElementById("collection-{{ section.id }}");
 
-    if (section && grid) {
-      // Read grid setting from data attribute
+    if (grid && section) {
+      // Read grid columns setting from schema
       const cols = section.dataset.grid;
 
-      // Reset any previous grid classes
+      // Remove any old grid classes
       grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
 
-      // Apply correct class based on theme setting
+      // Apply correct grid class for desktop
       if (cols === "2") {
         grid.classList.add("grid--2-col-desktop");
       } else if (cols === "6") {
         grid.classList.add("grid--6-col-desktop");
       } else {
-        grid.classList.add("grid--3-col-desktop"); // default
+        grid.classList.add("grid--3-col-desktop"); // Default = 3 per row
       }
     }
   });
@@ -129,44 +146,23 @@
   "name": "Featured 6",
   "tag": "section",
   "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
-    {
-      "type": "inline_richtext",
-      "id": "title",
-      "default": "Our Featured Products",
-      "label": "Heading"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
+    { "type": "inline_richtext", "id": "title", "default": "Our Featured Products", "label": "Heading" },
+    { "type": "select", "id": "heading_size", "options": [
         { "value": "h2", "label": "Small" },
         { "value": "h1", "label": "Medium" },
         { "value": "h0", "label": "Large" },
         { "value": "hxl", "label": "Extra Large" },
         { "value": "hxxl", "label": "Huge" }
-      ],
-      "default": "h1",
-      "label": "Heading size"
+      ], "default": "h1", "label": "Heading size"
     },
-    {
-      "type": "richtext",
-      "id": "description",
-      "label": "Description"
-    },
-    {
-      "type": "select",
-      "id": "description_style",
-      "label": "Description style",
-      "options": [
+    { "type": "richtext", "id": "description", "label": "Description" },
+    { "type": "select", "id": "description_style", "label": "Description style", "options": [
         { "value": "body", "label": "Body" },
         { "value": "subtitle", "label": "Subtitle" },
         { "value": "uppercase", "label": "Uppercase" }
-      ],
-      "default": "body"
+      ], "default": "body"
     },
 
     { "type": "product", "id": "product_1", "label": "Product 1" },
@@ -176,39 +172,21 @@
     { "type": "product", "id": "product_5", "label": "Product 5" },
     { "type": "product", "id": "product_6", "label": "Product 6" },
 
-    {
-      "type": "select",
-      "id": "grid_columns",
-      "label": "Products per row (desktop)",
-      "options": [
+    { "type": "select", "id": "grid_columns", "label": "Products per row (desktop)", "options": [
         { "value": "2", "label": "2 per row" },
-        { "value": "3", "label": "2 per row" },
-        { "value": "4", "label": "2 per row" }
-      ],
-      "default": "3"
+        { "value": "3", "label": "3 per row" },
+        { "value": "6", "label": "6 per row" }
+      ], "default": "3"
     },
 
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "options": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "select", "id": "image_ratio", "options": [
         { "value": "adapt", "label": "Adapt" },
         { "value": "portrait", "label": "Portrait" },
         { "value": "square", "label": "Square" }
-      ],
-      "default": "adapt",
-      "label": "Image ratio"
+      ], "default": "adapt", "label": "Image ratio"
     },
-    {
-      "type": "select",
-      "id": "image_shape",
-      "options": [
+    { "type": "select", "id": "image_shape", "options": [
         { "value": "default", "label": "Default" },
         { "value": "arch", "label": "Arch" },
         { "value": "blob", "label": "Blob" },
@@ -217,64 +195,20 @@
         { "value": "diamond", "label": "Diamond" },
         { "value": "parallelogram", "label": "Parallelogram" },
         { "value": "round", "label": "Round" }
-      ],
-      "default": "default",
-      "label": "Image shape"
+      ], "default": "default", "label": "Image shape"
     },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": false,
-      "label": "Show secondary image"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "Show vendor"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "Show rating"
-    },
-    {
-      "type": "select",
-      "id": "quick_add",
-      "default": "none",
-      "label": "Quick add",
-      "options": [
+    { "type": "checkbox", "id": "show_secondary_image", "default": false, "label": "Show secondary image" },
+    { "type": "checkbox", "id": "show_vendor", "default": false, "label": "Show vendor" },
+    { "type": "checkbox", "id": "show_rating", "default": false, "label": "Show rating" },
+    { "type": "select", "id": "quick_add", "default": "none", "label": "Quick add", "options": [
         { "value": "none", "label": "None" },
         { "value": "standard", "label": "Standard" },
         { "value": "bulk", "label": "Bulk" }
       ]
     },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 36
-    }
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 36 }
   ],
-  "presets": [
-    {
-      "name": "Featured 6"
-    }
-  ]
+  "presets": [{ "name": "Featured 6" }]
 }
 {% endschema %}
