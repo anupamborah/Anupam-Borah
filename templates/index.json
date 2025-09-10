@@ -73,6 +73,16 @@
         "button_size": "medium"
       }
     },
+    "test_rich_text_TRyaGn": {
+      "type": "test-rich-text",
+      "name": "Responsive Rich Text",
+      "settings": {
+        "desktop_text": "<h4>SUSTAINABLE, ETHICALLY  MADE CLOTHES IN SIZES XXS TO 6XL</h4>",
+        "mobile_text": "<h5>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</h5>",
+        "desktop_font_size": 16,
+        "mobile_font_size": 14
+      }
+    },
     "rich_text_U7EF93": {
       "type": "rich-text",
       "blocks": {
@@ -100,7 +110,6 @@
       "type": "featured-collection",
       "settings": {
         "title": "Tisso vison in the wild",
-        "columns_desktop": "3",
         "product_1": "black-leather-bag",
         "product_2": "blue-silk-tuxedo",
         "product_3": "chequered-red-shirt",
@@ -113,6 +122,7 @@
   "order": [
     "image_banner",
     "test_banner_MCfqJ9",
+    "test_rich_text_TRyaGn",
     "rich_text_U7EF93",
     "featured_collection"
   ]
