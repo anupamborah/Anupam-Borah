@@ -42,6 +42,7 @@
 </section>
 
 <style>
+  /* Section styling */
   .featured-products-section {
     padding: 40px 20px;
   }
@@ -51,6 +52,8 @@
     font-size: 2rem;
     font-weight: bold;
   }
+
+  /* Grid styling */
   #Grid-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -59,17 +62,21 @@
     padding: 0;
     margin: 0;
   }
+
   .grid-item {
     cursor: pointer;
     outline: none;
   }
+
   .grid-item img {
     width: 100%;
     height: 300px;
     object-fit: contain;
     border-radius: 4px;
   }
+
   /* Popup styling */
+
   .product-popup {
     display: none;
     position: fixed;
@@ -79,9 +86,11 @@
     align-items: center;
     justify-content: center;
   }
+
   .product-popup.active {
     display: flex;
   }
+
   .popup-content {
     background: #fff;
     max-width: 500px;
@@ -92,6 +101,7 @@
     overflow-y: auto;
     position: relative;
   }
+
   .popup-close {
     background: none;
     border: none;
@@ -101,19 +111,23 @@
     top: 10px;
     right: 15px;
   }
+
   .variant-options {
     margin: 20px 0;
   }
+
   .variant-options label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
   }
+
   .variant-options select {
     width: 100%;
     padding: 8px;
     margin-bottom: 12px;
   }
+
   .add-to-cart-btn {
     background-color: #007bff;
     border: none;
@@ -124,10 +138,12 @@
     border-radius: 4px;
     width: 100%;
   }
+
   .add-to-cart-btn:disabled {
     background-color: #999;
     cursor: not-allowed;
   }
+
   .popup-message {
     margin-top: 15px;
     font-weight: 600;
