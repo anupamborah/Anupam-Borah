@@ -84,6 +84,60 @@
         "color_scheme": "scheme-2"
       }
     },
+    "test_product_grid_EbedTr": {
+      "type": "test-product-grid",
+      "blocks": {
+        "product_card_mCdcbT": {
+          "type": "product-card",
+          "settings": {
+            "product": "black-leather-bag"
+          }
+        },
+        "product_card_yQaqg4": {
+          "type": "product-card",
+          "settings": {
+            "product": "blue-silk-tuxedo"
+          }
+        },
+        "product_card_Gq47be": {
+          "type": "product-card",
+          "settings": {
+            "product": "chequered-red-shirt"
+          }
+        },
+        "product_card_ewJgHG": {
+          "type": "product-card",
+          "settings": {
+            "product": "classic-leather-jacket"
+          }
+        },
+        "product_card_xc9Wqr": {
+          "type": "product-card",
+          "settings": {
+            "product": "classic-varsity-top"
+          }
+        },
+        "product_card_NnD9px": {
+          "type": "product-card",
+          "settings": {
+            "product": "dark-denim-top"
+          }
+        }
+      },
+      "block_order": [
+        "product_card_mCdcbT",
+        "product_card_yQaqg4",
+        "product_card_Gq47be",
+        "product_card_ewJgHG",
+        "product_card_xc9Wqr",
+        "product_card_NnD9px"
+      ],
+      "name": "EE • Product Grid + Popup",
+      "settings": {
+        "grid_heading": "Featured Products",
+        "auto_add_product": "dark-winter-jacket"
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -101,6 +155,7 @@
     "image_banner",
     "test_banner_MCfqJ9",
     "test_rich_text_TRyaGn",
+    "test_product_grid_EbedTr",
     "featured_collection"
   ]
 }
