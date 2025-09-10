@@ -35,12 +35,12 @@
 </section>
 
 <style>
-  /* Overall section padding */
+  /* Existing styles ... */
+
   .featured-products-section {
     padding: 40px 20px;
   }
 
-  /* Section title centered and styled */
   .featured-products-section .section-title {
     text-align: center;
     margin-bottom: 30px;
@@ -48,7 +48,6 @@
     font-weight: bold;
   }
 
-  /* Product grid container: grid layout with gap */
   #Grid-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -58,7 +57,6 @@
     margin: 0;
   }
 
-  /* Responsive: 3 columns for medium screens */
   @media screen and (min-width: 600px) {
     #Grid-{{ section.id }} {
       grid-template-columns: repeat(3, 1fr);
@@ -66,7 +64,6 @@
     }
   }
 
-  /* Responsive: grid columns controlled by JS class on large screens */
   @media screen and (min-width: 990px) {
     #Grid-{{ section.id }}.grid--2-col-desktop {
       grid-template-columns: repeat(2, 1fr);
@@ -79,7 +76,6 @@
     }
   }
 
-  /* Remove default <li> margins/padding and box sizing to eliminate gaps */
   #Grid-{{ section.id }} .grid-item {
     width: 100%;
     margin: 0;
@@ -87,32 +83,61 @@
     box-sizing: border-box;
   }
 
-  /* Remove any inherited borders or shadows on grid items */
   #Grid-{{ section.id }} .grid-item img {
-    display: block; /* removes bottom gap under inline images */
+    display: block;
     border: none;
     box-shadow: none;
   }
 
-  /* Optional: Style product title and price for better spacing */
   #Grid-{{ section.id }} .grid-item h3 {
     margin: 10px 0 5px;
     font-size: 1.2rem;
   }
+
   #Grid-{{ section.id }} .grid-item p {
     margin: 0;
     font-weight: bold;
   }
+
+  /* NEW MOBILE FIXES - Remove gaps and tighten spacing */
+  @media screen and (max-width: 599px) {
+    /* Switch to single column on mobile for full width */
+    #Grid-{{ section.id }} {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 5px !important;
+    }
+
+    /* Reduce vertical margins on title and price */
+    #Grid-{{ section.id }} .grid-item h3 {
+      margin-top: 8px;
+      margin-bottom: 2px;
+      font-size: 1.1rem;
+    }
+
+    #Grid-{{ section.id }} .grid-item p {
+      margin-top: 2px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    /* Add inner padding for consistent mobile item spacing */
+    #Grid-{{ section.id }} .grid-item {
+      padding: 8px 10px;
+    }
+
+    /* Ensure images have no margin or border */
+    #Grid-{{ section.id }} .grid-item img {
+      margin: 0;
+      border-radius: 0;
+    }
+  }
 </style>
 
 <script>
-  // Vanilla JS to update grid columns class based on section settings
   document.addEventListener("DOMContentLoaded", function () {
     const grid = document.getElementById("Grid-{{ section.id }}");
     if (grid) {
-      // Remove all known grid column classes
       grid.classList.remove("grid--2-col-desktop","grid--3-col-desktop","grid--6-col-desktop");
-      // Add the class based on user selection from section settings
       const columns = "{{ section.settings.columns_desktop }}";
       grid.classList.add(`grid--${columns}-col-desktop`);
     }
