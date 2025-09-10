@@ -37,6 +37,7 @@
   background:transparent;  /* no bg */
   overflow:hidden;
   transition:transform .2s ease;
+  width: 80%;
 }
 .ee-card:hover {
   transform:scale(1.02);   /* subtle zoom */
