@@ -1,70 +1,54 @@
-{% comment %}
-  Featured Products (6) Section
-  - Mobile: 2-column grid
-  - Tablet/Desktop: user-selectable columns
-  - Proper product object resolution via all_products
-  - Vanilla JS only
-{% endcomment %}
-
 <section id="featured-products-{{ section.id }}" class="featured-products-section">
   <div class="page-width">
-    {%- if section.settings.title != blank -%}
+    {% if section.settings.title != blank %}
       <h2 class="section-title">{{ section.settings.title | escape }}</h2>
-    {%- endif -%}
+    {% endif %}
 
     <ul id="Grid-{{ section.id }}" class="product-grid">
-      {%- for i in (1..6) -%}
-        {%- assign setting_id = 'product_' | append: i -%}
-        {%- assign product_ref = section.settings[setting_id] -%}
-        {%- assign product = all_products[product_ref] -%}
-        {%- if product != blank -%}
+      {% for i in (1..6) %}
+        {% assign setting_id = 'product_' | append: i %}
+        {% assign product_handle = section.settings[setting_id] %}
+        {% assign product = all_products[product_handle] %}
+        {% if product %}
           <li class="grid-item">
-            {%- render 'card-product',
+            {% render 'card-product',
               card_product: product,
               media_aspect_ratio: 'square',
               show_secondary_image: true,
               show_vendor: false,
               show_rating: false
-            -%}
+            %}
           </li>
-        {%- endif -%}
-      {%- endfor -%}
+        {% endif %}
+      {% endfor %}
     </ul>
   </div>
 </section>
 
-{%- style -%}
-  /* Section wrapper */
+<style>
   .featured-products-section {
     padding: 40px 20px;
   }
-
   .featured-products-section .section-title {
     text-align: center;
     margin-bottom: 30px;
     font-size: 2rem;
     font-weight: bold;
   }
-
-  /* Grid base */
   #Grid-{{ section.id }} {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Mobile: 2 columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     list-style: none;
     padding: 0;
     margin: 0;
   }
-
-  /* Tablet (>=600px): 3 columns */
   @media screen and (min-width: 600px) {
     #Grid-{{ section.id }} {
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
   }
-
-  /* Desktop (>=990px): controlled by settings */
   @media screen and (min-width: 990px) {
     #Grid-{{ section.id }}.grid--2-col-desktop {
       grid-template-columns: repeat(2, 1fr);
@@ -76,31 +60,17 @@
       grid-template-columns: repeat(6, 1fr);
     }
   }
-
-  /* Grid item */
   #Grid-{{ section.id }} .grid-item {
-    display: block;
     width: 100%;
   }
-
-  /* Ensure consistent image sizing */
-  #Grid-{{ section.id }} .card__media {
-    aspect-ratio: 1/1;
-    background: #f8f8f8; /* Light grey only as fallback */
-  }
-{%- endstyle -%}
+</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const grid = document.getElementById("Grid-{{ section.id }}");
-
     if (grid) {
-      // Remove existing desktop grid classes
-      grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
-
-      // Add class from schema setting
-      const desktopCols = "{{ section.settings.columns_desktop }}";
-      grid.classList.add(`grid--${desktopCols}-col-desktop`);
+      grid.classList.remove("grid--2-col-desktop","grid--3-col-desktop","grid--6-col-desktop");
+      grid.classList.add(`grid--{{ section.settings.columns_desktop }}-col-desktop`);
     }
   });
 </script>
@@ -108,15 +78,8 @@
 {% schema %}
 {
   "name": "Featured 6",
-  "tag": "section",
-  "class": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Section title",
-      "default": "Featured Products"
-    },
+    { "type": "text", "id": "title", "label": "Section title", "default": "Featured Products" },
     {
       "type": "select",
       "id": "columns_desktop",
@@ -135,8 +98,6 @@
     { "type": "product", "id": "product_5", "label": "Product 5" },
     { "type": "product", "id": "product_6", "label": "Product 6" }
   ],
-  "presets": [
-    { "name": "Featured 6" }
-  ]
+  "presets": [{ "name": "Featured 6" }]
 }
 {% endschema %}
