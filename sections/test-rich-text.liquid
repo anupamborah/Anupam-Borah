@@ -60,13 +60,7 @@
 </div>
 
 <style>
-  .responsive-rich-text {
-    margin: 0 0;
-    padding: 0px 0px; 
-  }
   .responsive-rich-text .desktop-text {
-    margin: 0;
-    padding: 0;
     display: block;
     text-align: center;
     font-size: {{ section.settings.desktop_font_size }}px;
@@ -78,16 +72,10 @@
   }
 
   @media (max-width: 767px) {
-    .responsive-rich-text {
-      margin: 0 0;
-      padding: 1px 0px; 
-    }
     .responsive-rich-text .desktop-text {
       display: none;
     }
     .responsive-rich-text .mobile-text {
-      margin: 0;
-      padding: 0;
       display: block;
     }
   }
