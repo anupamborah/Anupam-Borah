@@ -1,0 +1,74 @@
+{% schema %}
+{
+  "name": "Responsive Rich Text",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "desktop_text",
+      "label": "Desktop Text",
+      "default": "<p>This is the text for desktop screens.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "mobile_text",
+      "label": "Mobile Text",
+      "default": "<p>This is the text for mobile screens.</p>"
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "label": "Font Size (Desktop)",
+      "min": 12,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "Font Size (Mobile)",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive Rich Text",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="responsive-rich-text">
+  <div class="desktop-text">
+    {{ section.settings.desktop_text }}
+  </div>
+  <div class="mobile-text">
+    {{ section.settings.mobile_text }}
+  </div>
+</div>
+
+<style>
+  .responsive-rich-text .desktop-text {
+    display: block;
+    font-size: {{ section.settings.desktop_font_size }}px;
+  }
+  .responsive-rich-text .mobile-text {
+    display: none;
+    font-size: {{ section.settings.mobile_font_size }}px;
+  }
+
+  @media (max-width: 767px) {
+    .responsive-rich-text .desktop-text {
+      display: none;
+    }
+    .responsive-rich-text .mobile-text {
+      display: block;
+    }
+  }
+</style>
