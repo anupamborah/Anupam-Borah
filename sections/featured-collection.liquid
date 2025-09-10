@@ -10,9 +10,11 @@
         {% assign product_handle = section.settings[setting_id] %}
         {% assign product = all_products[product_handle] %}
         {% if product %}
+          {% assign featured_image = product.featured_image | default: product.images.first %}
           <li class="grid-item">
             {% render 'card-product',
               card_product: product,
+              featured_image: featured_image,
               media_aspect_ratio: 'square',
               show_secondary_image: true,
               show_vendor: false,
@@ -72,32 +74,6 @@
       grid.classList.remove("grid--2-col-desktop","grid--3-col-desktop","grid--6-col-desktop");
       grid.classList.add(`grid--{{ section.settings.columns_desktop }}-col-desktop`);
     }
-
-    // Fix grey/blank placeholders by inserting a fallback image where missing
-    const gridItems = document.querySelectorAll("#Grid-{{ section.id }} .grid-item");
-    gridItems.forEach(function(card) {
-      // Attempt to find image/media container inside the card
-      let media = card.querySelector("[class*='media'], [class*='image'], .card__media, .card__image, div, figure");
-      let img = media ? media.querySelector("img") : card.querySelector("img");
-
-      if (!img) {
-        if (media) {
-          media.innerHTML = '';
-        }
-        const placeholderImg = document.createElement("img");
-        placeholderImg.src = "https://via.placeholder.com/400x400?text=No+Image";
-        placeholderImg.alt = "Default product image";
-        placeholderImg.style.background = "white";
-        placeholderImg.style.objectFit = "contain";
-        placeholderImg.style.width = "100%";
-        placeholderImg.style.height = "100%";
-        if (media) {
-          media.appendChild(placeholderImg);
-        } else {
-          card.appendChild(placeholderImg);
-        }
-      }
-    });
   });
 </script>
 
