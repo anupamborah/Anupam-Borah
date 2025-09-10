@@ -68,7 +68,7 @@
   <!-- Mobile Dropdown -->
   <div class="mobile-dropdown" style="display:none;">
     <div class="dropdown-content">
-      <div class="store-name">{{ section.settings.store_name }}</div>
+      {% comment %} <div class="store-name">{{ section.settings.store_name }}</div> {% endcomment %}
       <div class="subheading">{{ section.settings.subheading }}</div>
       <a href="{{ section.settings.collection_link }}" class="header-btn test-banner__button btn-size-medium">
         {{ section.settings.button_label }}
