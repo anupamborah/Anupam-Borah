@@ -62,6 +62,7 @@
     <div class="middle">
       {{ section.settings.store_name }}
     </div>
+    <div class="right"></div>
   </div>
 
   <!-- Mobile Dropdown -->
@@ -112,8 +113,8 @@
   .header-btn {
     position: relative;
     display: inline-block;
-    background-color: black;
-    color: white;
+    background-color: #fff544;
+    color: black;
     text-decoration: none;
     border-radius: 4px;
     overflow: hidden;
@@ -121,7 +122,7 @@
     z-index: 1;
   }
 
-  /* Background animation effect */
+  /* Background animation effect (reversed) */
   .test-banner__button::before {
     content: "";
     position: absolute;
@@ -129,7 +130,7 @@
     left: 0;
     width: 0%;
     height: 100%;
-    background: yellow;
+    background: black;
     z-index: -1;
     transition: width 0.4s ease;
   }
@@ -139,7 +140,7 @@
   }
 
   .test-banner__button:hover {
-    color: black;
+    color: #fff544;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
 
@@ -162,10 +163,15 @@
     display: none;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
   .mobile-header .middle {
     font-weight: bold;
     font-size: 18px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
   }
   .burger-btn {
     background: none;
