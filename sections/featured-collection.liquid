@@ -1,142 +1,98 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{% comment %}
+  Featured Products (6) Section
+  - Responsive grid (1 col mobile, 2 col tablet, desktop controlled by settings)
+  - Vanilla JS only (no jQuery)
+  - Well-commented for maintainability
+{% endcomment %}
 
-{%- if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
+<section id="featured-products-{{ section.id }}" class="featured-products-section">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <h2 class="section-title">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
 
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
-
-{%- if section.settings.quick_add == 'standard' -%}
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-{%- if section.settings.quick_add == 'bulk' -%}
-  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
+    <ul id="Grid-{{ section.id }}" class="product-grid">
+      {%- for i in (1..6) -%}
+        {%- assign setting_id = 'product_' | append: i -%}
+        {%- assign product = section.settings[setting_id] -%}
+        {%- if product != blank -%}
+          <li class="grid-item">
+            {%- render 'card-product',
+              card_product: product,
+              media_aspect_ratio: 'square',
+              show_secondary_image: true,
+              show_vendor: false,
+              show_rating: false
+            -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
 
 {%- style -%}
-  /* Section padding controls */
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  /* Section wrapper */
+  .featured-products-section {
+    padding: 40px 20px;
   }
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+  .featured-products-section .section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: bold;
   }
 
-  /* Responsive grid styling */
+  /* Grid base */
   #Grid-{{ section.id }} {
     display: grid;
-    grid-template-columns: 1fr; /* Default: Mobile = 1 column */
-    gap: 16px; /* Spacing between products */
+    grid-template-columns: 1fr; /* Mobile default */
+    gap: 20px;
+    list-style: none; /* Remove bullets */
+    padding: 0;
+    margin: 0;
   }
 
-  @media screen and (min-width: 750px) {
+  /* Tablet (>=600px): 2 columns */
+  @media screen and (min-width: 600px) {
     #Grid-{{ section.id }} {
-      grid-template-columns: repeat(3, 1fr); /* Default desktop = 3 columns */
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  /* Extra grid modifiers (applied by JS based on theme settings) */
-  .grid--2-col-desktop {
-    grid-template-columns: repeat(2, 1fr) !important;
+  /* Desktop (>=990px): controlled by classes */
+  @media screen and (min-width: 990px) {
+    #Grid-{{ section.id }}.grid--2-col-desktop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #Grid-{{ section.id }}.grid--3-col-desktop {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    #Grid-{{ section.id }}.grid--6-col-desktop {
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
-  .grid--3-col-desktop {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-  .grid--6-col-desktop {
-    grid-template-columns: repeat(6, 1fr) !important;
+
+  /* Ensure each item stretches nicely */
+  #Grid-{{ section.id }} .grid-item {
+    display: block;
+    width: 100%;
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} isolate gradient">
-  <div
-    class="collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
-    id="collection-{{ section.id }}"
-    data-id="{{ section.id }}"
-    data-grid="{{ section.settings.grid_columns }}"
-  >
-    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width">
-      {%- if section.settings.title != blank -%}
-        <h2 class="title inline-richtext {{ section.settings.heading_size }}">
-          {{ section.settings.title }}
-        </h2>
-      {%- endif -%}
-
-      {%- if section.settings.description != blank -%}
-        <div class="collection__description {{ section.settings.description_style }} rte">
-          {{ section.settings.description }}
-        </div>
-      {%- endif -%}
-    </div>
-
-    <ul id="Grid-{{ section.id }}" class="product-grid" role="list">
-      {% for i in (1..6) %}
-        {% assign product_key = 'product_' | append: i %}
-        {% assign selected_product = section.settings[product_key] %}
-        {% if selected_product != blank %}
-          {% assign product = all_products[selected_product] %}
-          <li class="grid__item">
-            {% render 'card-product',
-              card_product: product,
-              media_aspect_ratio: section.settings.image_ratio,
-              image_shape: section.settings.image_shape,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating,
-              quick_add: section.settings.quick_add
-            %}
-          </li>
-        {% else %}
-          <li class="grid__item">
-            {% assign placeholder_image = 'product-apparel-1' %}
-            {% render 'card-product',
-              media_aspect_ratio: section.settings.image_ratio,
-              image_shape: section.settings.image_shape,
-              lazy_load: false,
-              placeholder_image: placeholder_image
-            %}
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Get grid element
+  document.addEventListener("DOMContentLoaded", function () {
+    // Select grid element
     const grid = document.getElementById("Grid-{{ section.id }}");
-    const section = document.getElementById("collection-{{ section.id }}");
 
-    if (grid && section) {
-      // Read grid columns setting from schema
-      const cols = section.dataset.grid;
-
-      // Remove any old grid classes
+    if (grid) {
+      // Remove any old desktop classes
       grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
 
-      // Apply correct grid class for desktop
-      if (cols === "2") {
-        grid.classList.add("grid--2-col-desktop");
-      } else if (cols === "6") {
-        grid.classList.add("grid--6-col-desktop");
-      } else {
-        grid.classList.add("grid--3-col-desktop"); // Default = 3 per row
-      }
+      // Apply the one selected in schema
+      const desktopCols = "{{ section.settings.columns_desktop }}";
+      grid.classList.add(`grid--${desktopCols}-col-desktop`);
     }
   });
 </script>
@@ -148,67 +104,32 @@
   "class": "section",
   "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
-    { "type": "inline_richtext", "id": "title", "default": "Our Featured Products", "label": "Heading" },
-    { "type": "select", "id": "heading_size", "options": [
-        { "value": "h2", "label": "Small" },
-        { "value": "h1", "label": "Medium" },
-        { "value": "h0", "label": "Large" },
-        { "value": "hxl", "label": "Extra Large" },
-        { "value": "hxxl", "label": "Huge" }
-      ], "default": "h1", "label": "Heading size"
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Featured Products"
     },
-    { "type": "richtext", "id": "description", "label": "Description" },
-    { "type": "select", "id": "description_style", "label": "Description style", "options": [
-        { "value": "body", "label": "Body" },
-        { "value": "subtitle", "label": "Subtitle" },
-        { "value": "uppercase", "label": "Uppercase" }
-      ], "default": "body"
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "6", "label": "6 columns" }
+      ]
     },
-
     { "type": "product", "id": "product_1", "label": "Product 1" },
     { "type": "product", "id": "product_2", "label": "Product 2" },
     { "type": "product", "id": "product_3", "label": "Product 3" },
     { "type": "product", "id": "product_4", "label": "Product 4" },
     { "type": "product", "id": "product_5", "label": "Product 5" },
-    { "type": "product", "id": "product_6", "label": "Product 6" },
-
-    { "type": "select", "id": "grid_columns", "label": "Products per row (desktop)", "options": [
-        { "value": "2", "label": "2 per row" },
-        { "value": "3", "label": "3 per row" },
-        { "value": "6", "label": "6 per row" }
-      ], "default": "3"
-    },
-
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    { "type": "select", "id": "image_ratio", "options": [
-        { "value": "adapt", "label": "Adapt" },
-        { "value": "portrait", "label": "Portrait" },
-        { "value": "square", "label": "Square" }
-      ], "default": "adapt", "label": "Image ratio"
-    },
-    { "type": "select", "id": "image_shape", "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "arch", "label": "Arch" },
-        { "value": "blob", "label": "Blob" },
-        { "value": "chevronleft", "label": "Chevron Left" },
-        { "value": "chevronright", "label": "Chevron Right" },
-        { "value": "diamond", "label": "Diamond" },
-        { "value": "parallelogram", "label": "Parallelogram" },
-        { "value": "round", "label": "Round" }
-      ], "default": "default", "label": "Image shape"
-    },
-    { "type": "checkbox", "id": "show_secondary_image", "default": false, "label": "Show secondary image" },
-    { "type": "checkbox", "id": "show_vendor", "default": false, "label": "Show vendor" },
-    { "type": "checkbox", "id": "show_rating", "default": false, "label": "Show rating" },
-    { "type": "select", "id": "quick_add", "default": "none", "label": "Quick add", "options": [
-        { "value": "none", "label": "None" },
-        { "value": "standard", "label": "Standard" },
-        { "value": "bulk", "label": "Bulk" }
-      ]
-    },
-    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 36 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 36 }
+    { "type": "product", "id": "product_6", "label": "Product 6" }
   ],
-  "presets": [{ "name": "Featured 6" }]
+  "presets": [
+    { "name": "Featured 6" }
+  ]
 }
 {% endschema %}
