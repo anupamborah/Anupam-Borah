@@ -23,7 +23,7 @@
                 {{ prod.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: prod.title }}
               {% endif %}
             </a>
-            <div class="ee-card__info">
+            {% comment %} <div class="ee-card__info">
               <h3 class="ee-card__title">{{ prod.title }}</h3>
               <p class="ee-card__price">
                 {% if prod.compare_at_price_min > prod.price_min %}
@@ -31,7 +31,7 @@
                 {% endif %}
                 <strong>{{ prod.price_min | money }}</strong>
               </p>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Embed product JSON for popup -->
             <script type="application/json" class="ee-product-json">
