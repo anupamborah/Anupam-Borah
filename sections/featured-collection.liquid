@@ -1,9 +1,9 @@
 {% comment %}
   Featured Products (6) Section
-  - Responsive grid (1 col mobile, 2 col tablet, desktop controlled by settings)
-  - Uses product objects directly from section.settings (no all_products lookup)
-  - Vanilla JS only (no jQuery)
-  - Well-commented for maintainability
+  - Mobile: 2-column grid
+  - Tablet/Desktop: user-selectable columns
+  - Proper product object resolution via all_products
+  - Vanilla JS only
 {% endcomment %}
 
 <section id="featured-products-{{ section.id }}" class="featured-products-section">
@@ -15,7 +15,8 @@
     <ul id="Grid-{{ section.id }}" class="product-grid">
       {%- for i in (1..6) -%}
         {%- assign setting_id = 'product_' | append: i -%}
-        {%- assign product = section.settings[setting_id] -%}
+        {%- assign product_ref = section.settings[setting_id] -%}
+        {%- assign product = all_products[product_ref] -%}
         {%- if product != blank -%}
           <li class="grid-item">
             {%- render 'card-product',
@@ -48,21 +49,22 @@
   /* Grid base */
   #Grid-{{ section.id }} {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile default */
-    gap: 20px;
-    list-style: none; /* Remove bullets */
+    grid-template-columns: repeat(2, 1fr); /* Mobile: 2 columns */
+    gap: 15px;
+    list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  /* Tablet (>=600px): 2 columns */
+  /* Tablet (>=600px): 3 columns */
   @media screen and (min-width: 600px) {
     #Grid-{{ section.id }} {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
   }
 
-  /* Desktop (>=990px): controlled by classes */
+  /* Desktop (>=990px): controlled by settings */
   @media screen and (min-width: 990px) {
     #Grid-{{ section.id }}.grid--2-col-desktop {
       grid-template-columns: repeat(2, 1fr);
@@ -75,23 +77,28 @@
     }
   }
 
-  /* Ensure each item stretches nicely */
+  /* Grid item */
   #Grid-{{ section.id }} .grid-item {
     display: block;
     width: 100%;
+  }
+
+  /* Ensure consistent image sizing */
+  #Grid-{{ section.id }} .card__media {
+    aspect-ratio: 1/1;
+    background: #f8f8f8; /* Light grey only as fallback */
   }
 {%- endstyle -%}
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Select grid element
     const grid = document.getElementById("Grid-{{ section.id }}");
 
     if (grid) {
-      // Remove any old desktop classes
+      // Remove existing desktop grid classes
       grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
 
-      // Apply the one selected in schema
+      // Add class from schema setting
       const desktopCols = "{{ section.settings.columns_desktop }}";
       grid.classList.add(`grid--${desktopCols}-col-desktop`);
     }
@@ -103,7 +110,6 @@
   "name": "Featured 6",
   "tag": "section",
   "class": "section",
-  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     {
       "type": "text",
