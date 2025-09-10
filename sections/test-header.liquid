@@ -44,8 +44,9 @@
       {{ section.settings.subheading }}
     </div>
     <div class="right">
-      <a href="{{ section.settings.collection_link }}" class="banner-btn">
+      <a href="{{ section.settings.collection_link }}" class="header-btn test-banner__button btn-size-medium">
         {{ section.settings.button_label }}
+        <span class="arrow">➝</span>
       </a>
     </div>
   </div>
@@ -68,8 +69,9 @@
     <div class="dropdown-content">
       <div class="store-name">{{ section.settings.store_name }}</div>
       <div class="subheading">{{ section.settings.subheading }}</div>
-      <a href="{{ section.settings.collection_link }}" class="banner-btn">
+      <a href="{{ section.settings.collection_link }}" class="header-btn test-banner__button btn-size-medium">
         {{ section.settings.button_label }}
+        <span class="arrow">➝</span>
       </a>
     </div>
   </div>
@@ -106,23 +108,53 @@
     text-align: right;
   }
 
-  /* Exact Button styling from test-banner.liquid */
-  .banner-btn {
+  /* Button Styling */
+  .header-btn {
+    position: relative;
     display: inline-block;
-    padding: 12px 28px;
-    background-color: #000000;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
+    background-color: black;
+    color: white;
     text-decoration: none;
     border-radius: 4px;
-    transition: all 0.3s ease;
-    border: 1px solid #000000;
-    text-align: center;
+    overflow: hidden;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
   }
-  .banner-btn:hover {
-    background-color: transparent;
-    color: #000000;
+
+  /* Background animation effect */
+  .test-banner__button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: yellow;
+    z-index: -1;
+    transition: width 0.4s ease;
+  }
+
+  .test-banner__button:hover::before {
+    width: 100%;
+  }
+
+  .test-banner__button:hover {
+    color: black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  /* Button sizes */
+  .btn-size-small  { padding: 8px 16px; font-size: 12px; }
+  .btn-size-medium { padding: 14px 40px; font-size: 16px; }
+  .btn-size-large  { padding: 16px 32px; font-size: 16px; }
+
+  .test-banner__button .arrow {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .test-banner__button:hover .arrow {
+    transform: translateX(6px);
   }
 
   /* Mobile */
