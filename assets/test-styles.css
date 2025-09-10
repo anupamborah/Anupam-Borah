@@ -46,7 +46,7 @@
   height:auto;
   display:block;
   object-fit:cover;
-  aspect-ratio:3/4; /* portrait ratio */
+  aspect-ratio:4/4; /* portrait ratio */
 }
 .ee-card__info { padding:10px 4px; }
 .ee-card__title { font-size:14px; margin:0 0 4px; font-weight:500; }
