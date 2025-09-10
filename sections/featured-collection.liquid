@@ -42,6 +42,7 @@
     class="collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
     id="collection-{{ section.id }}"
     data-id="{{ section.id }}"
+    data-grid="{{ section.settings.grid_columns }}"
   >
     <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width">
       {%- if section.settings.title != blank -%}
@@ -58,8 +59,8 @@
     </div>
 
     <ul
-      id="Slider-{{ section.id }}"
-      class="grid product-grid grid--3-col-desktop grid--2-col-tablet-down"
+      id="Grid-{{ section.id }}"
+      class="grid product-grid"
       role="list"
     >
       {% for i in (1..6) %}
@@ -97,6 +98,31 @@
     {%- endif -%}
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Find the section wrapper
+    const section = document.getElementById("collection-{{ section.id }}");
+    const grid = document.getElementById("Grid-{{ section.id }}");
+
+    if (section && grid) {
+      // Read grid setting from data attribute
+      const cols = section.dataset.grid;
+
+      // Reset any previous grid classes
+      grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
+
+      // Apply correct class based on theme setting
+      if (cols === "2") {
+        grid.classList.add("grid--2-col-desktop");
+      } else if (cols === "6") {
+        grid.classList.add("grid--6-col-desktop");
+      } else {
+        grid.classList.add("grid--3-col-desktop"); // default
+      }
+    }
+  });
+</script>
 
 {% schema %}
 {
@@ -149,6 +175,18 @@
     { "type": "product", "id": "product_4", "label": "Product 4" },
     { "type": "product", "id": "product_5", "label": "Product 5" },
     { "type": "product", "id": "product_6", "label": "Product 6" },
+
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Products per row (desktop)",
+      "options": [
+        { "value": "2", "label": "2 per row" },
+        { "value": "3", "label": "3 per row" },
+        { "value": "6", "label": "6 per row" }
+      ],
+      "default": "3"
+    },
 
     {
       "type": "color_scheme",
