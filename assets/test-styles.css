@@ -7,7 +7,7 @@
 }
 
 .ee-container {
-  max-width:1600px;
+  max-width:1400px;
   margin-inline:auto;
   padding:clamp(16px,2vw,28px);
 }
