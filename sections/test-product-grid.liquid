@@ -1,15 +1,9 @@
 {% comment %}
-  New section from scratch: Product Grid + Popup
-  - Six blocks (product pickers)
-  - Clicking a card (or hotspot circle) opens a modal with:
-      title, price, description, variant options, Add to Cart
-  - Vanilla JS only (assets/test-popup.js)
-  - Auto-add rule: if selected variant options include 'Black' and 'Medium', also add the configured "Soft Winter Jacket"
+  Product Grid + Popup
+  - Desktop: 3 columns
+  - Mobile: 2 columns
+  - Modal quick view
 {% endcomment %}
-
-{% stylesheet %}
-/* Minimal critical CSS; rest in assets/test-styles.css */
-{% endstylesheet %}
 
 <section class="ee-grid" data-section-id="{{ section.id }}">
   <div class="ee-container">
@@ -39,7 +33,7 @@
               </p>
             </div>
 
-            <!-- Embed product JSON for the popup -->
+            <!-- Embed product JSON for popup -->
             <script type="application/json" class="ee-product-json">
               {{ prod | json }}
             </script>
@@ -49,7 +43,7 @@
     </div>
   </div>
 
-  <!-- Accessible Modal -->
+  <!-- Modal -->
   <div class="ee-modal" data-modal hidden aria-hidden="true" aria-labelledby="ee-modal-title" role="dialog">
     <div class="ee-modal__overlay" data-modal-overlay></div>
     <div class="ee-modal__panel" role="document">
@@ -62,18 +56,14 @@
         <div class="ee-desc" data-modal-desc></div>
 
         <form class="ee-variants" data-variants-form>
-          <!-- Option groups injected by JS -->
           <div data-options></div>
-
           <div class="ee-qty">
             <label for="ee-qty">Qty</label>
             <input id="ee-qty" name="quantity" type="number" min="1" value="1" inputmode="numeric" />
           </div>
-
           <button type="submit" class="ee-btn ee-btn--primary" data-add-to-cart>
             <span>Add to cart</span>
           </button>
-
           <p class="ee-status" data-status></p>
         </form>
       </div>
@@ -105,13 +95,15 @@
       "type": "product",
       "id": "auto_add_product",
       "label": "Auto-add product (Soft Winter Jacket)",
-      "info": "This product will be auto-added when a Black + Medium variant is added to cart. If it has multiple variants, the first available will be used."
+      "info": "Auto-added when a Black + Medium variant is added to cart."
     }
   ],
   "blocks": [
     { "type": "product-card", "name": "Product", "settings": [{ "type": "product", "id": "product", "label": "Product" }] }
   ],
   "max_blocks": 6,
-  "presets": [{ "name": "EE • Product Grid + Popup", "blocks": [{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" }] }]
+  "presets": [
+    { "name": "EE • Product Grid + Popup", "blocks": [{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" },{ "type": "product-card" }] }
+  ]
 }
 {% endschema %}
