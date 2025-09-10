@@ -58,6 +58,16 @@
         "show_text_below": false
       }
     },
+    "test_header_n8fiVR": {
+      "type": "test-header",
+      "name": "Test Header",
+      "settings": {
+        "store_name": "TISSO VISON",
+        "subheading": "Find the ideal gift for your loved ones.",
+        "collection_link": "",
+        "button_label": "Shop Now"
+      }
+    },
     "test_banner_MCfqJ9": {
       "type": "test-banner",
       "name": "Test Banner",
@@ -154,6 +164,7 @@
   },
   "order": [
     "image_banner",
+    "test_header_n8fiVR",
     "test_banner_MCfqJ9",
     "test_rich_text_TRyaGn",
     "test_product_grid_EbedTr",
