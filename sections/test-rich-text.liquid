@@ -39,7 +39,7 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
-    },
+    }
   ],
   "presets": [
     {
@@ -60,11 +60,17 @@
 </div>
 
 <style>
+  .responsive-rich-text {
+    margin: 0; /* remove theme default gap */
+    padding: 40px 20px; /* add controlled inner padding */
+  }
+
   .responsive-rich-text .desktop-text {
     display: block;
     text-align: center;
     font-size: {{ section.settings.desktop_font_size }}px;
   }
+
   .responsive-rich-text .mobile-text {
     display: none;
     text-align: center;
