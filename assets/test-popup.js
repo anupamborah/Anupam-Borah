@@ -12,29 +12,29 @@
   const optionsRoot = section.querySelector('[data-options]');
   const form = section.querySelector('[data-variants-form]');
   const qtyInput = form.querySelector('input[name="quantity"]');
-  const sizeDropdown = form.querySelector('[data-size-dropdown]');
   const statusEl = form.querySelector('[data-status]');
 
   const MONEY_FORMAT = document.documentElement.getAttribute('lang') === 'en' ? 'money' : 'money_with_currency'; // simple
   const fmtMoney = (cents) => {
+    // Minimal formatter; Shopify’s Liquid did the initial display already
     return (cents/100).toLocaleString(undefined, {style:'currency', currency: (Shopify && Shopify.currency && Shopify.currency.active) || 'USD'});
   };
 
-  let currentProduct = null; 
-  let selectedOptions = [];  
+  let currentProduct = null; // full product JSON
+  let selectedOptions = [];  // array of option values, in order
 
   // Utility: find variant by selected options
   function findVariantByOptions(product, options){
     return product.variants.find(v => {
+      // v.options is an array in same order as product.options
       return v.options.every((val, idx) => String(val) === String(options[idx]));
     });
   }
 
-  // Build option chips + size dropdown
+  // Build option chips
   function renderOptions(product){
     optionsRoot.innerHTML = '';
     selectedOptions = product.options.map(()=>'');
-
     product.options.forEach((optName, idx) => {
       const row = document.createElement('div');
       row.className = 'ee-option-row';
@@ -42,44 +42,30 @@
       label.textContent = optName;
       row.appendChild(label);
 
-      // Collect unique values for this index
+      // Collect unique values for this index across variants (available ones)
       const values = Array.from(new Set(product.variants.map(v => v.options[idx])));
 
-      // If this option is "Size" → dropdown
-      if (optName.toLowerCase().includes('size')) {
-        sizeDropdown.innerHTML = '<option disabled selected>Choose your size</option>';
-        values.forEach(val => {
-          const opt = document.createElement('option');
-          opt.value = val;
-          opt.textContent = val;
-          sizeDropdown.appendChild(opt);
-        });
-        sizeDropdown.onchange = () => {
-          selectedOptions[idx] = sizeDropdown.value;
+      values.forEach(val => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'ee-chip';
+        chip.textContent = val;
+        chip.dataset.value = val;
+        chip.addEventListener('click', () => {
+          // set selected
+          const siblings = row.querySelectorAll('.ee-chip');
+          siblings.forEach(s => s.dataset.selected = 'false');
+          chip.dataset.selected = 'true';
+          selectedOptions[idx] = val;
           updatePriceStock();
-        };
-      } else {
-        // Otherwise render as chips
-        values.forEach(val => {
-          const chip = document.createElement('button');
-          chip.type = 'button';
-          chip.className = 'ee-chip';
-          chip.textContent = val;
-          chip.dataset.value = val;
-          chip.addEventListener('click', () => {
-            const siblings = row.querySelectorAll('.ee-chip');
-            siblings.forEach(s => s.dataset.selected = 'false');
-            chip.dataset.selected = 'true';
-            selectedOptions[idx] = val;
-            updatePriceStock();
-          });
-          row.appendChild(chip);
         });
-        optionsRoot.appendChild(row);
-      }
+        row.appendChild(chip);
+      });
+
+      optionsRoot.appendChild(row);
     });
 
-    // Default preselect first values for non-size options
+    // Default preselect first values of each row
     optionsRoot.querySelectorAll('.ee-option-row').forEach((row, idx) => {
       const first = row.querySelector('.ee-chip');
       if(first){ first.click(); }
@@ -98,18 +84,20 @@
   function openModal(product){
     currentProduct = product;
 
+    // media
     const img = (product.images && product.images[0]) || product.featured_image;
     if(img){ imageEl.src = img.src || img; } else { imageEl.removeAttribute('src'); }
 
+    // title, price, desc
     titleEl.textContent = product.title;
     descEl.innerHTML = product.body_html || '';
     priceEl.textContent = fmtMoney(product.price_min);
 
+    // options
     if(product.options && product.options.length){
       renderOptions(product);
     } else {
-      optionsRoot.innerHTML = ''; 
-      selectedOptions = [];
+      optionsRoot.innerHTML = ''; selectedOptions = [];
     }
 
     modal.hidden = false;
@@ -125,7 +113,7 @@
     statusEl.textContent = '';
   }
 
-  // Click handlers
+  // Click handlers on cards / hotspots
   section.querySelectorAll('.ee-card').forEach(card => {
     const hotspot = card.querySelector('.ee-hotspot');
     const jsonEl = card.querySelector('.ee-product-json');
@@ -150,7 +138,7 @@
     return res.json();
   }
 
-  // Auto-add logic
+  // Auto-add logic: Black + Medium -> add Soft Winter Jacket
   function shouldTriggerAutoAdd(variant){
     if(!variant || !Array.isArray(variant.options)) return false;
     const vals = variant.options.map(String);
@@ -174,7 +162,7 @@
     if(!currentProduct){ return; }
     statusEl.textContent = 'Adding…';
 
-    const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
+    const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
     const variant = currentProduct.options?.length ? findVariantByOptions(currentProduct, selectedOptions) : (currentProduct.variants && currentProduct.variants[0]);
 
     if(!variant){
@@ -189,15 +177,17 @@
     try{
       await addToCart(variant.id, qty);
 
+      // Conditional auto add
       if(shouldTriggerAutoAdd(variant)){
         const autoProduct = getAutoProduct();
         const autoVariant = firstAvailableVariant(autoProduct);
         if(autoVariant){
-          try { await addToCart(autoVariant.id, 1); } catch (err) { /* ignore */ }
+          try { await addToCart(autoVariant.id, 1); } catch (err) { /* ignore soft failure */ }
         }
       }
 
       statusEl.textContent = 'Added! View your cart to checkout.';
+      // Optionally: window.dispatchEvent(new CustomEvent('cart:updated'));
     } catch(err){
       statusEl.textContent = 'Error adding to cart. Please try again.';
     }
