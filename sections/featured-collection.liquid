@@ -72,6 +72,23 @@
       grid.classList.remove("grid--2-col-desktop","grid--3-col-desktop","grid--6-col-desktop");
       grid.classList.add(`grid--{{ section.settings.columns_desktop }}-col-desktop`);
     }
+
+    // Fix grey image placeholders by adding fallback images
+    const productCards = document.querySelectorAll("#Grid-{{ section.id }} .grid-item");
+    productCards.forEach(function(card) {
+      let img = card.querySelector("img");
+      if (!img || !img.src || img.src.trim() === "" || img.src.includes("placeholder") || img.src.includes("data:image")) {
+        if (!img) {
+          img = document.createElement("img");
+          card.prepend(img);
+        }
+        img.src = "https://via.placeholder.com/400x400?text=No+Image";
+        img.alt = "Default product image";
+        img.style.background = "white";
+        img.style.objectFit = "contain";
+        img.style.width = "100%";
+      }
+    });
   });
 </script>
 
