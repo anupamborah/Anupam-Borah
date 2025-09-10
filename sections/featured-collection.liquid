@@ -73,20 +73,29 @@
       grid.classList.add(`grid--{{ section.settings.columns_desktop }}-col-desktop`);
     }
 
-    // Fix grey image placeholders by adding fallback images
-    const productCards = document.querySelectorAll("#Grid-{{ section.id }} .grid-item");
-    productCards.forEach(function(card) {
-      let img = card.querySelector("img");
-      if (!img || !img.src || img.src.trim() === "" || img.src.includes("placeholder") || img.src.includes("data:image")) {
-        if (!img) {
-          img = document.createElement("img");
-          card.prepend(img);
+    // Fix grey/blank placeholders by inserting a fallback image where missing
+    const gridItems = document.querySelectorAll("#Grid-{{ section.id }} .grid-item");
+    gridItems.forEach(function(card) {
+      // Attempt to find image/media container inside the card
+      let media = card.querySelector("[class*='media'], [class*='image'], .card__media, .card__image, div, figure");
+      let img = media ? media.querySelector("img") : card.querySelector("img");
+
+      if (!img) {
+        if (media) {
+          media.innerHTML = '';
         }
-        img.src = "https://via.placeholder.com/400x400?text=No+Image";
-        img.alt = "Default product image";
-        img.style.background = "white";
-        img.style.objectFit = "contain";
-        img.style.width = "100%";
+        const placeholderImg = document.createElement("img");
+        placeholderImg.src = "https://via.placeholder.com/400x400?text=No+Image";
+        placeholderImg.alt = "Default product image";
+        placeholderImg.style.background = "white";
+        placeholderImg.style.objectFit = "contain";
+        placeholderImg.style.width = "100%";
+        placeholderImg.style.height = "100%";
+        if (media) {
+          media.appendChild(placeholderImg);
+        } else {
+          card.appendChild(placeholderImg);
+        }
       }
     });
   });
