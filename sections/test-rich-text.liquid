@@ -70,11 +70,11 @@
 }
 {% endschema %}
 
-<div class="responsive-rich-text color-{{ section.settings.color_scheme }}">
+<div class="responsive-rich-text color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
   <div class="desktop-text">
     {{ section.settings.desktop_text }}
   </div>
-  <div class="mobile-text color-{{ section.settings.color_scheme }}">
+  <div class="mobile-text color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
     {{ section.settings.mobile_text }}
   </div>
 </div>
