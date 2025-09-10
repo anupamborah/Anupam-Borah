@@ -25,8 +25,11 @@
                 style="width: 100%; height: 300px; object-fit: contain;" />
             {% endif %}
 
-            <h3>{{ product.title }}</h3>
-            <p>{{ product.price | money }}</p>
+            <!-- Product details container visible only on mobile -->
+            <div class="product-details">
+              <h3>{{ product.title }}</h3>
+              <p>{{ product.price | money }}</p>
+            </div>
           </li>
         {% endif %}
       {% endfor %}
@@ -35,12 +38,12 @@
 </section>
 
 <style>
-  /* Existing styles ... */
-
+  /* Section padding */
   .featured-products-section {
     padding: 40px 20px;
   }
 
+  /* Title style */
   .featured-products-section .section-title {
     text-align: center;
     margin-bottom: 30px;
@@ -48,6 +51,7 @@
     font-weight: bold;
   }
 
+  /* Product grid default two columns */
   #Grid-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -57,13 +61,7 @@
     margin: 0;
   }
 
-  @media screen and (min-width: 600px) {
-    #Grid-{{ section.id }} {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-  }
-
+  /* Desktop specific column control */
   @media screen and (min-width: 990px) {
     #Grid-{{ section.id }}.grid--2-col-desktop {
       grid-template-columns: repeat(2, 1fr);
@@ -76,6 +74,7 @@
     }
   }
 
+  /* Grid item reset */
   #Grid-{{ section.id }} .grid-item {
     width: 100%;
     margin: 0;
@@ -83,61 +82,66 @@
     box-sizing: border-box;
   }
 
+  /* Image style */
   #Grid-{{ section.id }} .grid-item img {
     display: block;
     border: none;
     box-shadow: none;
   }
 
-  #Grid-{{ section.id }} .grid-item h3 {
-    margin: 10px 0 5px;
-    font-size: 1.2rem;
+  /* Product details container styling */
+  #Grid-{{ section.id }} .product-details {
+    margin-top: 8px;
   }
-
-  #Grid-{{ section.id }} .grid-item p {
+  #Grid-{{ section.id }} .product-details h3 {
+    margin: 5px 0 2px;
+    font-size: 1.1rem;
+  }
+  #Grid-{{ section.id }} .product-details p {
     margin: 0;
-    font-weight: bold;
+    font-weight: 600;
   }
 
-  /* NEW MOBILE FIXES - Remove gaps and tighten spacing */
-  @media screen and (max-width: 599px) {
-    /* Switch to single column on mobile for full width */
+  /* MOBILE VIEW */
+  @media screen and (max-width: 989px) {
+    /* Show product details in mobile */
+    #Grid-{{ section.id }} .product-details {
+      display: block;
+    }
+
+    /* Grid with 2 columns for two products per row as requested */
     #Grid-{{ section.id }} {
-      grid-template-columns: repeat(1, 1fr);
-      gap: 5px !important;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 600px; /* Optional max width for better mobile sizing */
+      margin: 0 auto;
     }
 
-    /* Reduce vertical margins on title and price */
-    #Grid-{{ section.id }} .grid-item h3 {
-      margin-top: 8px;
-      margin-bottom: 2px;
-      font-size: 1.1rem;
+    /* Limit to 3 rows: show only first 6 products if more exist (optional) */
+    #Grid-{{ section.id }} li.grid-item:nth-child(n+7) {
+      display: none;
+    }
+  }
+
+  /* DESKTOP VIEW */
+  @media screen and (min-width: 990px) {
+    /* Hide product details on desktop */
+    #Grid-{{ section.id }} .product-details {
+      display: none;
     }
 
-    #Grid-{{ section.id }} .grid-item p {
-      margin-top: 2px;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    /* Add inner padding for consistent mobile item spacing */
-    #Grid-{{ section.id }} .grid-item {
-      padding: 8px 10px;
-    }
-
-    /* Ensure images have no margin or border */
-    #Grid-{{ section.id }} .grid-item img {
-      margin: 0;
-      border-radius: 0;
-    }
+    /* Desktop columns handled by JS class */
   }
 </style>
 
 <script>
+  // Vanilla JS for assigning desktop columns class dynamically
   document.addEventListener("DOMContentLoaded", function () {
     const grid = document.getElementById("Grid-{{ section.id }}");
     if (grid) {
-      grid.classList.remove("grid--2-col-desktop","grid--3-col-desktop","grid--6-col-desktop");
+      // Clear existing grid column classes
+      grid.classList.remove("grid--2-col-desktop", "grid--3-col-desktop", "grid--6-col-desktop");
+      // Add the selected desktop columns class
       const columns = "{{ section.settings.columns_desktop }}";
       grid.classList.add(`grid--${columns}-col-desktop`);
     }
